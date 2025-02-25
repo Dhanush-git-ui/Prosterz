@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -16,7 +15,60 @@ const posters: Poster[] = [
     title: "Prosterz Logo",
     category: "popstars"
   },
-  // Add all other posters here with their respective images and categories
+  {
+    id: 2,
+    image: "public/lovable-uploads/bdffd0c7-b2ca-4ca6-a07e-91f173ed1207.png",
+    title: "Lamborghini Revuelto",
+    category: "cars"
+  },
+  {
+    id: 3,
+    image: "public/lovable-uploads/8dd0d458-cc70-420b-bd7f-7a2fd4ac44f5.png",
+    title: "Ferrari LaFerrari",
+    category: "cars"
+  },
+  {
+    id: 4,
+    image: "public/lovable-uploads/1c9f001d-6edf-48a9-9fd6-203e81e21c29.png",
+    title: "Toyota Supra",
+    category: "cars"
+  },
+  {
+    id: 5,
+    image: "public/lovable-uploads/00a070d4-729c-4793-91ee-7cdcff7e76e9.png",
+    title: "Porsche 918 Spyder",
+    category: "cars"
+  },
+  {
+    id: 6,
+    image: "public/lovable-uploads/a25191a1-f9f4-42b2-85a6-2a308f820904.png",
+    title: "BMW M3 Sports Evolution",
+    category: "cars"
+  },
+  {
+    id: 7,
+    image: "public/lovable-uploads/5c392f8e-d75b-438d-9eac-cd3f38ffefbe.png",
+    title: "Porsche RWB",
+    category: "cars"
+  },
+  {
+    id: 8,
+    image: "public/lovable-uploads/8da519a5-4326-45cc-a93b-266c3f5ca7ee.png",
+    title: "Lamborghini Aventador",
+    category: "cars"
+  },
+  {
+    id: 9,
+    image: "public/lovable-uploads/b3213296-a70e-4664-b291-9da165dd636e.png",
+    title: "Porsche GT3 RS",
+    category: "cars"
+  },
+  {
+    id: 10,
+    image: "public/lovable-uploads/269c6c48-824c-4c7b-ac22-293e10ff0b7f.png",
+    title: "BMW M4 GT4",
+    category: "cars"
+  }
 ];
 
 export const PosterGrid = () => {
