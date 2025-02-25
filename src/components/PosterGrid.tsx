@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Poster {
   id: number;
@@ -117,61 +117,82 @@ export const PosterGrid = () => {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <div className="flex justify-center gap-4 mb-12">
-        <button 
+      <motion.div 
+        className="flex justify-center gap-4 mb-12"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <motion.button 
           onClick={() => setSelectedCategory("all")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={`px-6 py-2 rounded-full transition-all ${
             selectedCategory === "all" 
-              ? "bg-black text-white" 
-              : "bg-gray-100 hover:bg-gray-200"
+              ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white" 
+              : "bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200"
           }`}
         >
           All
-        </button>
-        <button 
+        </motion.button>
+        <motion.button 
           onClick={() => setSelectedCategory("cars")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={`px-6 py-2 rounded-full transition-all ${
             selectedCategory === "cars" 
-              ? "bg-black text-white" 
-              : "bg-gray-100 hover:bg-gray-200"
+              ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white" 
+              : "bg-gradient-to-r from-blue-100 to-cyan-100 hover:from-blue-200 hover:to-cyan-200"
           }`}
         >
           Cars
-        </button>
-        <button 
+        </motion.button>
+        <motion.button 
           onClick={() => setSelectedCategory("popstars")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={`px-6 py-2 rounded-full transition-all ${
             selectedCategory === "popstars" 
-              ? "bg-black text-white" 
-              : "bg-gray-100 hover:bg-gray-200"
+              ? "bg-gradient-to-r from-rose-600 to-orange-600 text-white" 
+              : "bg-gradient-to-r from-rose-100 to-orange-100 hover:from-rose-200 hover:to-orange-200"
           }`}
         >
           Popstars
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredPosters.map((poster) => (
-          <motion.div
-            key={poster.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="group relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100"
-          >
-            <img
-              src={poster.image}
-              alt={poster.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-white text-xl font-medium">{poster.title}</h3>
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={selectedCategory}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {filteredPosters.map((poster) => (
+            <motion.div
+              key={poster.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              whileHover={{ scale: 1.03 }}
+              className="group relative aspect-[3/4] overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 shadow-lg"
+            >
+              <img
+                src={poster.image.replace('public/', '/')}
+                alt={poster.title}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-white text-xl font-medium">{poster.title}</h3>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
