@@ -20,12 +20,25 @@ export default {
     },
     extend: {
       colors: {
-        background: "hsl(0 0% 100%)",
-        foreground: "hsl(0 0% 0%)",
-        primary: "#000000",
-        secondary: "#666666",
-        accent: "#FF3B30",
-        muted: "#F5F5F7",
+        border: "hsl(var(--border))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
       },
       fontFamily: {
         sans: ["Neue Haas Grotesk", "sans-serif"],
