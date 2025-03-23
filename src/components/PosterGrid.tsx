@@ -3,7 +3,17 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, X } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface Poster {
   id: number;
@@ -133,6 +143,7 @@ export const PosterGrid = () => {
   const [hoveredPosterId, setHoveredPosterId] = useState<number | null>(null);
   const [posters, setPosters] = useState<Poster[]>(defaultPosters);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -161,6 +172,14 @@ export const PosterGrid = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleAddToCart = (poster: Poster) => {
+    toast({
+      title: "Added to Cart",
+      description: `${poster.title} has been added to your cart.`,
+    });
+    setOpenPopoverId(null);
   };
 
   const filteredPosters = selectedCategory === "all" 
@@ -265,13 +284,60 @@ export const PosterGrid = () => {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <motion.button 
-                    className="px-6 py-2 bg-white text-gray-900 font-medium rounded-full transform transition-transform duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Quick View
-                  </motion.button>
+                  <Popover open={openPopoverId === poster.id} onOpenChange={(open) => {
+                    if (open) {
+                      setOpenPopoverId(poster.id);
+                    } else {
+                      setOpenPopoverId(null);
+                    }
+                  }}>
+                    <PopoverTrigger asChild>
+                      <motion.button 
+                        className="px-6 py-2 bg-white text-gray-900 font-medium rounded-full transform transition-transform duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Quick View
+                      </motion.button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-0" side="bottom">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="rounded-md overflow-hidden"
+                      >
+                        <div className="relative">
+                          <img 
+                            src={poster.image} 
+                            alt={poster.title} 
+                            className="w-full h-48 object-cover"
+                          />
+                          <button 
+                            onClick={() => setOpenPopoverId(null)}
+                            className="absolute top-2 right-2 bg-white rounded-full p-1 hover:bg-gray-100"
+                          >
+                            <X size={16} className="text-gray-700" />
+                          </button>
+                        </div>
+                        <div className="p-4 bg-white">
+                          <h3 className="font-medium text-lg">{poster.title}</h3>
+                          <p className="text-gray-600 mb-2">Category: {poster.category}</p>
+                          <div className="flex justify-between items-center mt-3">
+                            <p className="text-gray-900 font-bold">{poster.price}</p>
+                            <motion.button
+                              onClick={() => handleAddToCart(poster)}
+                              className="px-4 py-1.5 bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-sm rounded-full"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              Add to Cart
+                            </motion.button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </PopoverContent>
+                  </Popover>
                 </motion.div>
               </div>
               
@@ -283,6 +349,7 @@ export const PosterGrid = () => {
                     className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleAddToCart(poster)}
                   >
                     Add to Cart
                   </motion.button>
