@@ -39,7 +39,7 @@ const Index = () => {
       <motion.header 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="pt-32 pb-20 bg-gradient-to-br from-gray-50 to-gray-100 relative"
+        className="pt-32 pb-20 bg-gradient-to-br from-indigo-50 to-pink-50 relative"
       >
         <div className="container mx-auto px-6 text-left md:text-center">
           <motion.div
@@ -58,7 +58,7 @@ const Index = () => {
               href="#posters"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-3 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-colors"
+              className="inline-block px-8 py-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full hover:opacity-90 transition-colors"
             >
               Shop Now
             </motion.a>
@@ -85,14 +85,14 @@ const Index = () => {
               className="mb-12"
             >
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Collection</h2>
-              <div className="w-20 h-1 bg-indigo-500 rounded"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
             </motion.div>
             <PosterGrid />
           </div>
         </section>
 
         {/* Delivery Section */}
-        <section id="delivery" className="py-20 bg-gray-50">
+        <section id="delivery" className="py-20 bg-gradient-to-br from-indigo-50 to-pink-50">
           <div className="container mx-auto px-6">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -101,7 +101,7 @@ const Index = () => {
               className="mb-12"
             >
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Delivery Details</h2>
-              <div className="w-20 h-1 bg-indigo-500 rounded"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
               <p className="text-gray-600 mt-4">Enter your shipping details to calculate delivery options.</p>
             </motion.div>
             <DeliveryForm />
