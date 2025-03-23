@@ -1,6 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { PlusCircle } from "lucide-react";
 
 interface Poster {
   id: number;
@@ -10,7 +13,7 @@ interface Poster {
   price: string;
 }
 
-const posters: Poster[] = [
+const defaultPosters: Poster[] = [
   {
     id: 1,
     image: "/lovable-uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png",
@@ -128,6 +131,37 @@ const posters: Poster[] = [
 export const PosterGrid = () => {
   const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "all">("all");
   const [hoveredPosterId, setHoveredPosterId] = useState<number | null>(null);
+  const [posters, setPosters] = useState<Poster[]>(defaultPosters);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is admin
+    const userRole = localStorage.getItem("userRole");
+    if (userRole === "admin") {
+      setIsAdmin(true);
+    }
+    
+    // Get custom posters from localStorage
+    const customPosters = JSON.parse(localStorage.getItem("posters") || "[]");
+    if (customPosters.length > 0) {
+      // Merge default and custom posters
+      setPosters([...defaultPosters, ...customPosters]);
+    }
+  }, []);
+
+  const handleAddNewPoster = () => {
+    if (isAdmin) {
+      navigate("/admin/add-poster");
+    } else {
+      toast({
+        title: "Access Denied",
+        description: "Only administrators can add new posters.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const filteredPosters = selectedCategory === "all" 
     ? posters 
@@ -176,6 +210,18 @@ export const PosterGrid = () => {
         >
           Popstars
         </motion.button>
+        
+        {isAdmin && (
+          <motion.button 
+            onClick={handleAddNewPoster}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-6 py-2 rounded-full border bg-gradient-to-r from-indigo-600 to-pink-500 text-white flex items-center gap-2"
+          >
+            <PlusCircle size={16} />
+            Add Poster
+          </motion.button>
+        )}
       </motion.div>
 
       <AnimatePresence mode="wait">
