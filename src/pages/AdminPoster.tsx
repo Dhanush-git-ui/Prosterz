@@ -40,6 +40,20 @@ const AdminPoster = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [previewImages, setPreviewImages] = useState<string[]>([
+    "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
+    "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
+    "/lovable-uploads/5eebaa3f-6875-4580-b7fa-b2e13fe7630e.png",
+    "/lovable-uploads/494cd1a5-593b-48c9-9f8d-90a8a52dc728.png",
+    "/lovable-uploads/2d1b2d0a-1b4f-45cf-8388-905f15f44a6d.png",
+    "/lovable-uploads/a8b46723-86bf-4747-9599-9600f4cec148.png",
+    "/lovable-uploads/1836880e-b38f-470b-b38e-332b4a89e90c.png",
+    "/lovable-uploads/a9230ae5-f7f1-45b6-8170-45a1b584fc8c.png",
+    "/lovable-uploads/7cc7b66b-fb61-4c00-ad48-63f49a035a00.png",
+    "/lovable-uploads/50e1e322-7d76-4507-9465-ec9af542ff8f.png",
+    "/lovable-uploads/19cbeb0b-982a-4168-ae89-3c66f269d8b7.png",
+    "/lovable-uploads/c9ae4602-7abc-4cf0-890c-3c83554475b7.png",
+  ]);
   
   useEffect(() => {
     // Check if user is admin
@@ -68,6 +82,11 @@ const AdminPoster = () => {
       imageUrl: "",
     },
   });
+
+  // Handle selecting a preview image
+  const handleSelectPreviewImage = (imageUrl: string) => {
+    form.setValue("imageUrl", imageUrl);
+  };
 
   // Handle form submission
   const onSubmit = async (data: FormValues) => {
@@ -226,6 +245,29 @@ const AdminPoster = () => {
                   </FormItem>
                 )}
               />
+
+              <div className="mt-6">
+                <h3 className="text-sm font-medium text-gray-700 mb-3">Or select from available images:</h3>
+                <div className="grid grid-cols-3 gap-3 mt-2">
+                  {previewImages.map((img, index) => (
+                    <motion.div 
+                      key={index}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`cursor-pointer border-2 rounded-md overflow-hidden ${
+                        field.value === img ? "border-indigo-500" : "border-gray-200"
+                      }`}
+                      onClick={() => handleSelectPreviewImage(img)}
+                    >
+                      <img 
+                        src={img} 
+                        alt={`Preview ${index + 1}`} 
+                        className="w-full h-24 object-cover"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
 
               <Button 
                 type="submit" 
