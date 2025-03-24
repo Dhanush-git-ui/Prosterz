@@ -30,6 +30,18 @@ const AdminPoster = () => {
     "/lovable-uploads/2ab6faf1-f3f3-4802-9069-28b8175b3374.png",
     "/lovable-uploads/016d19da-2838-4374-b644-0b7992c34fc9.png",
     "/lovable-uploads/eb0e2058-5b28-45c1-9d57-1c951aa1ba3c.png",
+    // Adding new uploaded images
+    "/lovable-uploads/a69b8046-49f0-493e-b520-3ae195f66319.png",
+    "/lovable-uploads/a06cd3a1-9626-4fc2-94f7-7d27848b62fd.png",
+    "/lovable-uploads/81878a10-bcdb-48fa-8031-4e3acddb47b8.png",
+    "/lovable-uploads/e95eafe6-e351-42e7-a111-45cc67599a16.png",
+    "/lovable-uploads/f49cb557-f61f-43a5-b1e7-67cb218b3fcf.png",
+    "/lovable-uploads/608ba133-6a5a-4173-8205-6ee83f8f7c6d.png",
+    "/lovable-uploads/3d98ecec-6e8c-41d3-83b1-f0ec51971ff6.png",
+    "/lovable-uploads/aa7fb0df-7ad6-41a3-9e61-5f83fe53d8a9.png",
+    "/lovable-uploads/9cb189f7-7e11-4d4a-94e0-e65245470f31.png",
+    "/lovable-uploads/b7d713b4-098a-4ccc-9ea1-c92ec06e083f.png",
+    "/lovable-uploads/86398209-c105-471f-a2c0-04a6e33603e2.png",
   ];
 
   if (!isAdmin) {

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -221,7 +220,6 @@ const defaultPosters: Poster[] = [
     category: "cars",
     price: "$28.99"
   },
-  // New car posters
   {
     id: 29,
     image: "/lovable-uploads/900f507c-7cb5-4735-a12c-58d03ba34d7b.png",
@@ -236,7 +234,6 @@ const defaultPosters: Poster[] = [
     category: "cars",
     price: "$29.99"
   },
-  // New shoe posters
   {
     id: 31,
     image: "/lovable-uploads/a569b8e9-7b2a-4f82-b56f-419f0e1b9698.png",
@@ -299,6 +296,83 @@ const defaultPosters: Poster[] = [
     title: "Yeezy Elevate",
     category: "shoes",
     price: "$24.99"
+  },
+  {
+    id: 40,
+    image: "/lovable-uploads/a69b8046-49f0-493e-b520-3ae195f66319.png",
+    title: "Ford Mustang Vintage",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 41,
+    image: "/lovable-uploads/a06cd3a1-9626-4fc2-94f7-7d27848b62fd.png",
+    title: "Supra MK5 Orange",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 42,
+    image: "/lovable-uploads/81878a10-bcdb-48fa-8031-4e3acddb47b8.png",
+    title: "Nike Air Max 2023 Pink",
+    category: "shoes",
+    price: "$22.99"
+  },
+  {
+    id: 43,
+    image: "/lovable-uploads/e95eafe6-e351-42e7-a111-45cc67599a16.png",
+    title: "Nike One Step Ahead Red",
+    category: "shoes",
+    price: "$21.99"
+  },
+  {
+    id: 44,
+    image: "/lovable-uploads/f49cb557-f61f-43a5-b1e7-67cb218b3fcf.png",
+    title: "Airmax Retro Orange",
+    category: "shoes",
+    price: "$19.99"
+  },
+  {
+    id: 45,
+    image: "/lovable-uploads/608ba133-6a5a-4173-8205-6ee83f8f7c6d.png",
+    title: "Lacoste Green Edition",
+    category: "shoes",
+    price: "$24.99"
+  },
+  {
+    id: 46,
+    image: "/lovable-uploads/3d98ecec-6e8c-41d3-83b1-f0ec51971ff6.png",
+    title: "Puma Pixel Art",
+    category: "shoes",
+    price: "$18.99"
+  },
+  {
+    id: 47,
+    image: "/lovable-uploads/aa7fb0df-7ad6-41a3-9e61-5f83fe53d8a9.png",
+    title: "Nike High Sky",
+    category: "shoes",
+    price: "$23.99"
+  },
+  {
+    id: 48,
+    image: "/lovable-uploads/9cb189f7-7e11-4d4a-94e0-e65245470f31.png",
+    title: "Nike Drip Edition Blue",
+    category: "shoes",
+    price: "$22.99"
+  },
+  {
+    id: 49,
+    image: "/lovable-uploads/b7d713b4-098a-4ccc-9ea1-c92ec06e083f.png",
+    title: "Nike Force Blue",
+    category: "shoes",
+    price: "$22.99"
+  },
+  {
+    id: 50,
+    image: "/lovable-uploads/86398209-c105-471f-a2c0-04a6e33603e2.png",
+    title: "Yeezy Elevate Beige",
+    category: "shoes",
+    price: "$26.99"
   },
 ];
 
