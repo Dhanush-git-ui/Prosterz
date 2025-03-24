@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -29,7 +28,7 @@ import { useEffect } from "react";
 // Form schema with validation
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
-  category: z.enum(["cars", "popstars"]),
+  category: z.enum(["cars", "popstars", "shoes"]),
   price: z.string().min(1, "Price is required"),
   imageUrl: z.string().min(1, "Image URL is required"),
 });
@@ -53,6 +52,17 @@ const AdminPoster = () => {
     "/lovable-uploads/50e1e322-7d76-4507-9465-ec9af542ff8f.png",
     "/lovable-uploads/19cbeb0b-982a-4168-ae89-3c66f269d8b7.png",
     "/lovable-uploads/c9ae4602-7abc-4cf0-890c-3c83554475b7.png",
+    "/lovable-uploads/900f507c-7cb5-4735-a12c-58d03ba34d7b.png",
+    "/lovable-uploads/1e113fae-1117-432f-aed8-6c4c6f607cfd.png",
+    "/lovable-uploads/a569b8e9-7b2a-4f82-b56f-419f0e1b9698.png",
+    "/lovable-uploads/63f56bc2-c12d-4c4e-ad2e-ef7ecb9ed408.png",
+    "/lovable-uploads/44bf5969-8c36-4527-aab2-bc27bf031ec1.png",
+    "/lovable-uploads/4304ad5d-1375-4102-a5c8-a1f0764cbb61.png",
+    "/lovable-uploads/9d8bdc86-d65b-45e3-8dcc-ba4a43cce84a.png",
+    "/lovable-uploads/27ffc1f8-9a48-40ba-aee9-ccb52f2d5283.png",
+    "/lovable-uploads/2ab6faf1-f3f3-4802-9069-28b8175b3374.png",
+    "/lovable-uploads/016d19da-2838-4374-b644-0b7992c34fc9.png",
+    "/lovable-uploads/eb0e2058-5b28-45c1-9d57-1c951aa1ba3c.png",
   ]);
   
   useEffect(() => {
@@ -197,6 +207,7 @@ const AdminPoster = () => {
                       <SelectContent>
                         <SelectItem value="cars">Cars</SelectItem>
                         <SelectItem value="popstars">Popstars</SelectItem>
+                        <SelectItem value="shoes">Shoes</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
