@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -135,7 +134,91 @@ const defaultPosters: Poster[] = [
     title: "CO2",
     category: "popstars",
     price: "$24.99"
-  }
+  },
+  {
+    id: 17,
+    image: "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
+    title: "Lamborghini Aventador SVJ",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 18,
+    image: "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
+    title: "BMW M4 Nighthawk",
+    category: "cars",
+    price: "$27.99"
+  },
+  {
+    id: 19,
+    image: "/lovable-uploads/5eebaa3f-6875-4580-b7fa-b2e13fe7630e.png",
+    title: "Mazda RX-7 Spirit",
+    category: "cars",
+    price: "$28.99"
+  },
+  {
+    id: 20,
+    image: "/lovable-uploads/494cd1a5-593b-48c9-9f8d-90a8a52dc728.png",
+    title: "Lamborghini Revuelto LAMBO",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 21,
+    image: "/lovable-uploads/2d1b2d0a-1b4f-45cf-8388-905f15f44a6d.png",
+    title: "Ferrari LaFerrari Masterpiece",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 22,
+    image: "/lovable-uploads/a8b46723-86bf-4747-9599-9600f4cec148.png",
+    title: "Toyota GR Supra",
+    category: "cars",
+    price: "$27.99"
+  },
+  {
+    id: 23,
+    image: "/lovable-uploads/1836880e-b38f-470b-b38e-332b4a89e90c.png",
+    title: "Porsche 918 Spyder Elegance",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 24,
+    image: "/lovable-uploads/a9230ae5-f7f1-45b6-8170-45a1b584fc8c.png",
+    title: "BMW M3 Evolution",
+    category: "cars",
+    price: "$27.99"
+  },
+  {
+    id: 25,
+    image: "/lovable-uploads/7cc7b66b-fb61-4c00-ad48-63f49a035a00.png",
+    title: "Porsche 911 RWB",
+    category: "cars",
+    price: "$29.99"
+  },
+  {
+    id: 26,
+    image: "/lovable-uploads/50e1e322-7d76-4507-9465-ec9af542ff8f.png",
+    title: "BMW M4 GT4 Motorsport",
+    category: "cars",
+    price: "$27.99"
+  },
+  {
+    id: 27,
+    image: "/lovable-uploads/19cbeb0b-982a-4168-ae89-3c66f269d8b7.png",
+    title: "Porsche GT3 RS Heritage",
+    category: "cars",
+    price: "$27.99"
+  },
+  {
+    id: 28,
+    image: "/lovable-uploads/c9ae4602-7abc-4cf0-890c-3c83554475b7.png",
+    title: "Honda NSX-R Classic",
+    category: "cars",
+    price: "$28.99"
+  },
 ];
 
 export const PosterGrid = () => {
@@ -148,16 +231,13 @@ export const PosterGrid = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is admin
     const userRole = localStorage.getItem("userRole");
     if (userRole === "admin") {
       setIsAdmin(true);
     }
     
-    // Get custom posters from localStorage
     const customPosters = JSON.parse(localStorage.getItem("posters") || "[]");
     if (customPosters.length > 0) {
-      // Merge default and custom posters
       setPosters([...defaultPosters, ...customPosters]);
     }
   }, []);
