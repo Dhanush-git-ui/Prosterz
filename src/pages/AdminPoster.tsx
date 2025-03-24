@@ -255,7 +255,7 @@ const AdminPoster = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className={`cursor-pointer border-2 rounded-md overflow-hidden ${
-                        field.value === img ? "border-indigo-500" : "border-gray-200"
+                        form.getValues("imageUrl") === img ? "border-indigo-500" : "border-gray-200"
                       }`}
                       onClick={() => handleSelectPreviewImage(img)}
                     >
