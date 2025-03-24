@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -18,11 +19,12 @@ interface Poster {
   id: number;
   image: string;
   title: string;
-  category: "cars" | "popstars";
+  category: "cars" | "popstars" | "shoes";
   price: string;
 }
 
 const defaultPosters: Poster[] = [
+  // Original posters
   {
     id: 1,
     image: "/lovable-uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png",
@@ -219,10 +221,89 @@ const defaultPosters: Poster[] = [
     category: "cars",
     price: "$28.99"
   },
+  // New car posters
+  {
+    id: 29,
+    image: "/lovable-uploads/900f507c-7cb5-4735-a12c-58d03ba34d7b.png",
+    title: "Ford Mustang Classic",
+    category: "cars",
+    price: "$28.99"
+  },
+  {
+    id: 30,
+    image: "/lovable-uploads/1e113fae-1117-432f-aed8-6c4c6f607cfd.png",
+    title: "Toyota Supra MK5",
+    category: "cars",
+    price: "$29.99"
+  },
+  // New shoe posters
+  {
+    id: 31,
+    image: "/lovable-uploads/a569b8e9-7b2a-4f82-b56f-419f0e1b9698.png",
+    title: "Nike Air Max 2023",
+    category: "shoes",
+    price: "$19.99"
+  },
+  {
+    id: 32,
+    image: "/lovable-uploads/63f56bc2-c12d-4c4e-ad2e-ef7ecb9ed408.png",
+    title: "Nike One Step Ahead",
+    category: "shoes",
+    price: "$19.99"
+  },
+  {
+    id: 33,
+    image: "/lovable-uploads/44bf5969-8c36-4527-aab2-bc27bf031ec1.png",
+    title: "Air Max Iconic",
+    category: "shoes",
+    price: "$19.99"
+  },
+  {
+    id: 34,
+    image: "/lovable-uploads/4304ad5d-1375-4102-a5c8-a1f0764cbb61.png",
+    title: "Lacoste Limited Edition",
+    category: "shoes",
+    price: "$21.99"
+  },
+  {
+    id: 35,
+    image: "/lovable-uploads/9d8bdc86-d65b-45e3-8dcc-ba4a43cce84a.png",
+    title: "Puma Suede Classic",
+    category: "shoes",
+    price: "$18.99"
+  },
+  {
+    id: 36,
+    image: "/lovable-uploads/27ffc1f8-9a48-40ba-aee9-ccb52f2d5283.png",
+    title: "Nike High Drip",
+    category: "shoes",
+    price: "$22.99"
+  },
+  {
+    id: 37,
+    image: "/lovable-uploads/2ab6faf1-f3f3-4802-9069-28b8175b3374.png",
+    title: "Nike Drip Edition",
+    category: "shoes",
+    price: "$22.99"
+  },
+  {
+    id: 38,
+    image: "/lovable-uploads/016d19da-2838-4374-b644-0b7992c34fc9.png",
+    title: "Nike Air Force",
+    category: "shoes",
+    price: "$21.99"
+  },
+  {
+    id: 39,
+    image: "/lovable-uploads/eb0e2058-5b28-45c1-9d57-1c951aa1ba3c.png",
+    title: "Yeezy Elevate",
+    category: "shoes",
+    price: "$24.99"
+  },
 ];
 
 export const PosterGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "shoes" | "all">("all");
   const [hoveredPosterId, setHoveredPosterId] = useState<number | null>(null);
   const [posters, setPosters] = useState<Poster[]>(defaultPosters);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -308,6 +389,18 @@ export const PosterGrid = () => {
           }`}
         >
           Popstars
+        </motion.button>
+        <motion.button 
+          onClick={() => setSelectedCategory("shoes")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`px-6 py-2 rounded-full border transition-all ${
+            selectedCategory === "shoes" 
+              ? "bg-gray-900 text-white border-gray-900" 
+              : "bg-white text-gray-800 border-gray-300 hover:border-gray-400"
+          }`}
+        >
+          Shoes
         </motion.button>
         
         {isAdmin && (
