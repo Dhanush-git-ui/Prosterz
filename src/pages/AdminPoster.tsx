@@ -1,45 +1,12 @@
-import React, { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+
+import React from "react";
 import { motion } from "framer-motion";
-import { ImagePlus, Tag, FileType, DollarSign } from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useEffect } from "react";
-
-// Form schema with validation
-const formSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
-  category: z.enum(["cars", "popstars", "shoes"]),
-  price: z.string().min(1, "Price is required"),
-  imageUrl: z.string().min(1, "Image URL is required"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useAdminAuth } from "@/components/admin/useAdminAuth";
+import { PosterForm } from "@/components/admin/PosterForm";
 
 const AdminPoster = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [previewImages, setPreviewImages] = useState<string[]>([
+  const { isAdmin } = useAdminAuth();
+  const previewImages = [
     "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
     "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
     "/lovable-uploads/5eebaa3f-6875-4580-b7fa-b2e13fe7630e.png",
@@ -63,86 +30,7 @@ const AdminPoster = () => {
     "/lovable-uploads/2ab6faf1-f3f3-4802-9069-28b8175b3374.png",
     "/lovable-uploads/016d19da-2838-4374-b644-0b7992c34fc9.png",
     "/lovable-uploads/eb0e2058-5b28-45c1-9d57-1c951aa1ba3c.png",
-  ]);
-  
-  useEffect(() => {
-    // Check if user is admin
-    const userRole = localStorage.getItem("userRole");
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
-    
-    if (userRole !== "admin" || isAuthenticated !== "true") {
-      toast({
-        title: "Access denied",
-        description: "You don't have permission to access this page.",
-        variant: "destructive",
-      });
-      navigate("/");
-    } else {
-      setIsAdmin(true);
-    }
-  }, [navigate, toast]);
-  
-  // Initialize form
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      category: "cars",
-      price: "",
-      imageUrl: "",
-    },
-  });
-
-  // Handle selecting a preview image
-  const handleSelectPreviewImage = (imageUrl: string) => {
-    form.setValue("imageUrl", imageUrl);
-  };
-
-  // Handle form submission
-  const onSubmit = async (data: FormValues) => {
-    try {
-      // Format price with $ if not included
-      const formattedPrice = data.price.startsWith("$") 
-        ? data.price 
-        : `$${data.price}`;
-      
-      // Create new poster object
-      const newPoster = {
-        id: Date.now(), // Generate unique ID
-        title: data.title,
-        category: data.category,
-        price: formattedPrice,
-        image: data.imageUrl,
-      };
-      
-      // Get existing posters from localStorage or initialize empty array
-      const existingPosters = JSON.parse(localStorage.getItem("posters") || "[]");
-      
-      // Add new poster to array
-      existingPosters.push(newPoster);
-      
-      // Save updated posters back to localStorage
-      localStorage.setItem("posters", JSON.stringify(existingPosters));
-      
-      toast({
-        title: "Success!",
-        description: "New poster has been added.",
-      });
-      
-      // Reset form
-      form.reset();
-      
-      // Redirect to home page
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding poster:", error);
-      toast({
-        title: "Error",
-        description: "Failed to add new poster.",
-        variant: "destructive",
-      });
-    }
-  };
+  ];
 
   if (!isAdmin) {
     return null; // Don't render anything while checking permissions
@@ -163,131 +51,7 @@ const AdminPoster = () => {
             <p className="text-gray-600 mt-4">Fill in the details to add a new poster to the collection.</p>
           </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Poster Title</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <FileType className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          placeholder="e.g. Ferrari LaFerrari" 
-                          className="pl-10" 
-                          {...field} 
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <div className="relative">
-                          <Tag className="absolute left-3 top-3 h-4 w-4 text-gray-400 z-10" />
-                          <SelectTrigger className="pl-10">
-                            <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                        </div>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="cars">Cars</SelectItem>
-                        <SelectItem value="popstars">Popstars</SelectItem>
-                        <SelectItem value="shoes">Shoes</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          placeholder="24.99" 
-                          className="pl-10" 
-                          {...field} 
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image URL</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <ImagePlus className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          placeholder="https://example.com/image.jpg" 
-                          className="pl-10" 
-                          {...field} 
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="mt-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Or select from available images:</h3>
-                <div className="grid grid-cols-3 gap-3 mt-2">
-                  {previewImages.map((img, index) => (
-                    <motion.div 
-                      key={index}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`cursor-pointer border-2 rounded-md overflow-hidden ${
-                        form.getValues("imageUrl") === img ? "border-indigo-500" : "border-gray-200"
-                      }`}
-                      onClick={() => handleSelectPreviewImage(img)}
-                    >
-                      <img 
-                        src={img} 
-                        alt={`Preview ${index + 1}`} 
-                        className="w-full h-24 object-cover"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600"
-              >
-                Add Poster
-              </Button>
-            </form>
-          </Form>
+          <PosterForm previewImages={previewImages} />
         </div>
       </motion.div>
     </div>
