@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
 import { PosterPopover } from "./PosterPopover";
@@ -18,6 +18,27 @@ export const PosterCard = ({
   setOpenPopoverId 
 }: PosterCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x position within the element
+    const y = e.clientY - rect.top;  // y position within the element
+    
+    // Calculate the rotation based on mouse position
+    // Higher numbers for more extreme rotation
+    const rotateY = ((x / rect.width) - 0.5) * 20; 
+    const rotateX = ((y / rect.height) - 0.5) * -20;
+    
+    setMousePosition({ x: rotateY, y: rotateX });
+  };
+  
+  const resetMousePosition = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
   
   return (
     <motion.div
@@ -27,20 +48,55 @@ export const PosterCard = ({
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
       onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      onHoverEnd={() => {
+        setIsHovered(false);
+        resetMousePosition();
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={resetMousePosition}
       className="group relative flex flex-col"
+      ref={cardRef}
+      style={{ perspective: "1000px" }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
+      <motion.div 
+        className="relative aspect-[3/4] overflow-hidden bg-gray-100"
+        animate={{ 
+          rotateY: mousePosition.x,
+          rotateX: mousePosition.y,
+        }}
+        transition={{ 
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.5
+        }}
+        style={{ transformStyle: "preserve-3d" }}
+      >
         <motion.img
           src={poster.image}
           alt={poster.title}
           className="h-full w-full object-cover"
           initial={{ scale: 1 }}
           animate={{ 
-            scale: isHovered ? 1.1 : 1
+            scale: isHovered ? 1.1 : 1,
+            z: isHovered ? 20 : 0
           }}
           transition={{ duration: 0.4 }}
+          style={{ transformStyle: "preserve-3d" }}
         />
+        
+        {/* Add shadow and reflection effects */}
+        {isHovered && (
+          <motion.div 
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-20"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black to-transparent opacity-20"></div>
+          </motion.div>
+        )}
         
         <motion.div 
           className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -63,7 +119,7 @@ export const PosterCard = ({
             onAddToCart={onAddToCart}
           />
         </motion.div>
-      </div>
+      </motion.div>
       
       <div className="mt-4 text-left">
         <h3 className="text-gray-900 font-medium">{poster.title}</h3>
