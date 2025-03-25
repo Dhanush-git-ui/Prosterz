@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -6,6 +5,7 @@ import { LogIn, UserPlus, LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PosterGrid } from "../components/PosterGrid";
 import { DeliveryForm } from "../components/DeliveryForm";
+import { ThreeDPoster } from "../components/ThreeDPoster";
 import { 
   Dialog,
   DialogContent,
@@ -24,7 +24,6 @@ const Index = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check authentication status from localStorage
     const authStatus = localStorage.getItem("isAuthenticated");
     const email = localStorage.getItem("userEmail");
     const role = localStorage.getItem("userRole");
@@ -37,7 +36,6 @@ const Index = () => {
   }, []);
 
   const handleLogout = () => {
-    // Clear authentication data
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userRole");
@@ -66,7 +64,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Bar */}
       <motion.nav 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -177,7 +174,6 @@ const Index = () => {
         </div>
       </motion.nav>
 
-      {/* Hero Section */}
       <motion.header 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -207,14 +203,12 @@ const Index = () => {
           </motion.div>
         </div>
         
-        {/* Decorative background elements */}
         <div className="absolute -bottom-10 left-0 w-full overflow-hidden">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto">
             <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,117.3C672,107,768,117,864,144C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
         </div>
         
-        {/* Animated circles in background */}
         <motion.div 
           className="absolute top-20 right-10 w-16 h-16 rounded-full bg-purple-300 opacity-40"
           animate={{ 
@@ -254,9 +248,13 @@ const Index = () => {
         />
       </motion.header>
 
-      {/* Main Content */}
       <main>
-        {/* Poster Collection Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-6">
+            <ThreeDPoster />
+          </div>
+        </section>
+
         <section id="posters" className="py-20 bg-white">
           <div className="container mx-auto px-6">
             <motion.div 
@@ -272,7 +270,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Animated features section */}
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row gap-10 justify-center">
@@ -336,8 +333,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Delivery Section */}
-        <section id="delivery" className="py-20 bg-gradient-to-br from-indigo-50 to-pink-50">
+        <section id="delivery" className="py-20 bg-gradient-to-br from-indigo-50 to-pink-50 relative overflow-hidden">
           <div className="container mx-auto px-6">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -345,14 +341,13 @@ const Index = () => {
               viewport={{ once: true }}
               className="mb-12"
             >
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Delivery Details</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">Contact Us</h2>
               <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
-              <p className="text-gray-600 mt-4">Enter your shipping details to calculate delivery options.</p>
+              <p className="text-gray-600 mt-4">Get in touch with us through WhatsApp or email.</p>
             </motion.div>
             <DeliveryForm />
           </div>
           
-          {/* Animated decorative elements */}
           <motion.div 
             className="absolute right-5 top-1/4 w-24 h-24 opacity-10"
             animate={{ 
@@ -387,7 +382,6 @@ const Index = () => {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -428,3 +422,4 @@ const Index = () => {
 };
 
 export default Index;
+

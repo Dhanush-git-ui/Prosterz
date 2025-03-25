@@ -1,223 +1,147 @@
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import { Phone, Mail } from "lucide-react";
 
 export const DeliveryForm = () => {
-  const [address, setAddress] = useState({
-    fullName: "",
-    street: "",
-    city: "",
-    zipCode: "",
-    country: "",
-    phone: "",
-    email: ""
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle delivery address submission
-    console.log("Delivery address:", address);
-    toast.success("Delivery details saved successfully!");
+  const openWhatsApp = () => {
+    window.open(`https://wa.me/917995902773`, '_blank');
   };
 
-  const inputVariants = {
-    focus: { scale: 1.02, transition: { duration: 0.2 } },
-    blur: { scale: 1, transition: { duration: 0.2 } }
+  const openEmail = () => {
+    window.open(`mailto:Prosterzzzz@gmail.com`, '_blank');
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        stiffness: 100
+      }
+    }
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-start">
+    <div className="w-full py-10">
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-md"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
       >
-        <h3 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-3">Shipping Address</h3>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <motion.div
-              whileFocus="focus"
-              whileHover="focus"
-              animate="blur"
-              variants={inputVariants}
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 bg-gradient-to-br from-indigo-500 to-pink-500 p-12 text-white">
+            <motion.h3 
+              variants={itemVariants}
+              className="text-3xl font-bold mb-6"
             >
-              <Input
-                id="fullName"
-                value={address.fullName}
-                onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
-                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Enter your full name"
-                required
-              />
-            </motion.div>
-          </div>
-          <div>
-            <label htmlFor="street" className="block text-sm font-medium text-gray-700 mb-1">
-              Street Address
-            </label>
-            <motion.div
-              whileFocus="focus"
-              whileHover="focus"
-              animate="blur"
-              variants={inputVariants}
+              Get In Touch
+            </motion.h3>
+            <motion.p 
+              variants={itemVariants}
+              className="mb-8 opacity-90"
             >
-              <Input
-                id="street"
-                value={address.street}
-                onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Enter your street address"
-                required
-              />
-            </motion.div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
-                City
-              </label>
-              <motion.div
-                whileFocus="focus"
-                whileHover="focus"
-                animate="blur"
-                variants={inputVariants}
-              >
-                <Input
-                  id="city"
-                  value={address.city}
-                  onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                  className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Enter your city"
-                  required
-                />
-              </motion.div>
-            </div>
-            <div>
-              <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1">
-                ZIP Code
-              </label>
-              <motion.div
-                whileFocus="focus"
-                whileHover="focus"
-                animate="blur"
-                variants={inputVariants}
-              >
-                <Input
-                  id="zipCode"
-                  value={address.zipCode}
-                  onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
-                  className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Enter your ZIP code"
-                  required
-                />
-              </motion.div>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
-              Country
-            </label>
-            <motion.div
-              whileFocus="focus"
-              whileHover="focus"
-              animate="blur"
-              variants={inputVariants}
-            >
-              <Input
-                id="country"
-                value={address.country}
-                onChange={(e) => setAddress({ ...address, country: e.target.value })}
-                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Enter your country"
-                required
-              />
-            </motion.div>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-3 px-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
-            type="submit"
-          >
-            Save Shipping Address
-          </motion.button>
-        </form>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-md"
-      >
-        <h3 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-3">Contact Information</h3>
-        <form className="space-y-5">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <motion.div
-              whileFocus="focus"
-              whileHover="focus"
-              animate="blur"
-              variants={inputVariants}
-            >
-              <Input
-                id="email"
-                type="email"
-                value={address.email}
-                onChange={(e) => setAddress({ ...address, email: e.target.value })}
-                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Enter your email address"
-                required
-              />
-            </motion.div>
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-              Phone Number
-            </label>
-            <motion.div
-              whileFocus="focus"
-              whileHover="focus"
-              animate="blur"
-              variants={inputVariants}
-            >
-              <Input
-                id="phone"
-                type="tel"
-                value={address.phone}
-                onChange={(e) => setAddress({ ...address, phone: e.target.value })}
-                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Enter your phone number"
-                required
-              />
-            </motion.div>
-          </div>
-          <div className="pt-6">
-            <p className="text-gray-600 text-sm mb-4">
-              We'll use this information to contact you about your order and delivery.
-            </p>
+              Have questions about our posters? Contact us directly through WhatsApp or email.
+            </motion.p>
+            
             <motion.div 
-              className="bg-gray-50 border border-gray-200 rounded-lg p-4"
-              whileHover={{ scale: 1.01 }}
+              variants={itemVariants}
+              className="mb-6"
             >
-              <h4 className="font-medium text-gray-800 mb-2">Shipping Methods</h4>
-              <p className="text-gray-600 text-sm">
-                Standard shipping (3-5 business days): <span className="font-semibold">$4.99</span>
-              </p>
-              <p className="text-gray-600 text-sm mt-1">
-                Express shipping (1-2 business days): <span className="font-semibold">$9.99</span>
-              </p>
+              <h4 className="text-xl font-semibold mb-2">Our Hours</h4>
+              <p className="opacity-90">Monday - Friday: 9AM - 6PM</p>
+              <p className="opacity-90">Saturday: 10AM - 4PM</p>
+              <p className="opacity-90">Sunday: Closed</p>
+            </motion.div>
+            
+            <motion.div
+              variants={itemVariants}
+              className="relative h-40 mt-12 overflow-hidden"
+            >
+              <div className="absolute w-60 h-60 bg-white/10 rounded-full -bottom-20 -left-20"></div>
+              <div className="absolute w-40 h-40 bg-white/10 rounded-full -top-10 right-10"></div>
             </motion.div>
           </div>
-        </form>
+          
+          <div className="w-full md:w-1/2 p-12">
+            <motion.h3 
+              variants={itemVariants}
+              className="text-2xl font-bold text-gray-800 mb-8"
+            >
+              Contact Us
+            </motion.h3>
+            
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={openWhatsApp}
+              className="flex items-center p-5 bg-green-50 rounded-lg mb-6 cursor-pointer group"
+            >
+              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4 group-hover:bg-green-600 transition-colors">
+                <Phone className="text-white" size={24} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">WhatsApp</h4>
+                <p className="text-gray-600">+91 7995902773</p>
+              </div>
+              <motion.div 
+                className="ml-auto"
+                initial={{ x: 0 }}
+                whileHover={{ x: 5 }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.div>
+            </motion.div>
+            
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={openEmail}
+              className="flex items-center p-5 bg-indigo-50 rounded-lg cursor-pointer group"
+            >
+              <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center mr-4 group-hover:bg-indigo-600 transition-colors">
+                <Mail className="text-white" size={24} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">Email</h4>
+                <p className="text-gray-600">Prosterzzzz@gmail.com</p>
+              </div>
+              <motion.div 
+                className="ml-auto"
+                initial={{ x: 0 }}
+                whileHover={{ x: 5 }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.div>
+            </motion.div>
+            
+            <motion.div
+              variants={itemVariants}
+              className="mt-12 text-center"
+            >
+              <p className="text-gray-500">We'll get back to you as soon as possible!</p>
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
