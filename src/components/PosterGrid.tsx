@@ -14,6 +14,15 @@ export const PosterGrid = () => {
   const { toast } = useToast();
 
   const handleAddToCart = (poster: Poster) => {
+    if (!poster.cartAvailable) {
+      toast({
+        title: "Cart Unavailable",
+        description: "This poster is not available for purchase at this time.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     toast({
       title: "Added to Cart",
       description: `${poster.title} has been added to your cart.`,
