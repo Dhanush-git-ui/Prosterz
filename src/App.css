@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,11 +12,13 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em rgba(139, 208, 180, 0.6));
 }
+
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em rgba(168, 216, 234, 0.6));
 }
 
 @keyframes logo-spin {
@@ -35,8 +38,60 @@
 
 .card {
   padding: 2em;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1px solid rgba(139, 208, 180, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .read-the-docs {
-  color: #888;
+  color: rgba(95, 158, 126, 0.8);
+}
+
+/* Ghibli-inspired buttons */
+.ghibli-btn {
+  background: linear-gradient(135deg, #8BD0B4 0%, #5F9E7E 100%);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(139, 208, 180, 0.4);
+  transition: all 0.3s ease;
+}
+
+.ghibli-btn:hover {
+  box-shadow: 0 6px 16px rgba(139, 208, 180, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Ghibli-inspired panels */
+.ghibli-panel {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  border: 1px solid rgba(139, 208, 180, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Ghibli-inspired inputs */
+.ghibli-input {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 208, 180, 0.4);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.ghibli-input:focus {
+  border-color: rgba(139, 208, 180, 0.8);
+  box-shadow: 0 0 0 3px rgba(139, 208, 180, 0.2);
+  outline: none;
 }

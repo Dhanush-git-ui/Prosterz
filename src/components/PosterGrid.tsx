@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { CategoryFilter } from "./poster/CategoryFilter";
@@ -13,10 +13,55 @@ export const PosterGrid = () => {
   const { posters, isAdmin } = usePosterData();
   const { toast } = useToast();
 
+  // For Ghibli theme - add decorative leaves
+  useEffect(() => {
+    const addLeaves = () => {
+      const container = document.getElementById('poster-grid-container');
+      if (!container) return;
+
+      const leaves = document.querySelectorAll('.ghibli-leaf');
+      leaves.forEach(leaf => leaf.remove());
+
+      for (let i = 0; i < 6; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'ghibli-leaf';
+        leaf.style.left = `${Math.random() * 100}%`;
+        leaf.style.top = `${Math.random() * 100}%`;
+        leaf.style.animationDelay = `${Math.random() * 5}s`;
+        
+        // Create SVG leaf
+        const leafSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        leafSvg.setAttribute("width", "30");
+        leafSvg.setAttribute("height", "30");
+        leafSvg.setAttribute("viewBox", "0 0 24 24");
+        leafSvg.setAttribute("fill", "none");
+        leafSvg.setAttribute("stroke", "#8BD0B4");
+        leafSvg.setAttribute("stroke-width", "1");
+        leafSvg.setAttribute("stroke-linecap", "round");
+        leafSvg.setAttribute("stroke-linejoin", "round");
+        
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", "M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z");
+        leafSvg.appendChild(path);
+        
+        leaf.appendChild(leafSvg);
+        container.appendChild(leaf);
+      }
+    };
+
+    addLeaves();
+    window.addEventListener('resize', addLeaves);
+    
+    return () => {
+      window.removeEventListener('resize', addLeaves);
+    };
+  }, [selectedCategory]);
+
   const handleAddToCart = (poster: Poster) => {
     toast({
       title: "Added to Cart",
       description: `${poster.title} has been added to your cart.`,
+      className: "bg-ghibli-green text-white",
     });
     setOpenPopoverId(null);
   };
@@ -36,7 +81,7 @@ export const PosterGrid = () => {
     : uniquePosters.filter(poster => poster.category === selectedCategory);
 
   return (
-    <div>
+    <div id="poster-grid-container" className="relative">
       <CategoryFilter 
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
