@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
@@ -129,7 +128,7 @@ export const PosterCard = ({
         
         <div className="mt-4 text-left">
           <h3 className="text-gray-900 font-medium">{poster.title}</h3>
-          <p className="text-gray-700 mt-1">From {poster.sizes.A4}</p>
+          <p className="text-gray-700 mt-1">From ₹{poster.sizes.A4.replace('$', '')}</p>
         </div>
       </motion.div>
       
