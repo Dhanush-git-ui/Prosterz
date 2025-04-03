@@ -14,15 +14,6 @@ export const PosterGrid = () => {
   const { toast } = useToast();
 
   const handleAddToCart = (poster: Poster) => {
-    if (!poster.cartAvailable) {
-      toast({
-        title: "Cart Unavailable",
-        description: "This poster is not available for purchase at this time.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
     toast({
       title: "Added to Cart",
       description: `${poster.title} has been added to your cart.`,
@@ -30,9 +21,19 @@ export const PosterGrid = () => {
     setOpenPopoverId(null);
   };
 
+  // Filter out duplicates by title and then by category
+  const uniqueTitles = new Set();
+  const uniquePosters = posters.filter(poster => {
+    if (!uniqueTitles.has(poster.title)) {
+      uniqueTitles.add(poster.title);
+      return true;
+    }
+    return false;
+  });
+
   const filteredPosters = selectedCategory === "all" 
-    ? posters 
-    : posters.filter(poster => poster.category === selectedCategory);
+    ? uniquePosters 
+    : uniquePosters.filter(poster => poster.category === selectedCategory);
 
   return (
     <div>

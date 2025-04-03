@@ -1,6 +1,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import { Poster } from "@/data/posters";
 import { DialogContent, DialogOverlay, Dialog } from "@/components/ui/dialog";
 
@@ -59,34 +59,29 @@ export const PosterModal = ({
                           <span className="font-medium">A4</span>
                           <span className="text-sm text-gray-500">(210 × 297 mm)</span>
                         </div>
-                        <span className="font-semibold">{poster.sizes.A4}</span>
+                        <span className="font-semibold">₹{poster.sizes.A4.replace('$', '')}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">A3</span>
                           <span className="text-sm text-gray-500">(297 × 420 mm)</span>
                         </div>
-                        <span className="font-semibold">{poster.sizes.A3}</span>
+                        <span className="font-semibold">₹{poster.sizes.A3.replace('$', '')}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 <div className="mt-8">
-                  {poster.cartAvailable ? (
-                    <motion.button
-                      onClick={() => onAddToCart(poster)}
-                      className="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Add to Cart
-                    </motion.button>
-                  ) : (
-                    <div className="text-center py-3 bg-gray-100 rounded-full">
-                      <p className="text-gray-700 font-medium">Not available for purchase</p>
-                    </div>
-                  )}
+                  <motion.button
+                    onClick={() => onAddToCart(poster)}
+                    className="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <ShoppingCart size={18} />
+                    Add to Cart
+                  </motion.button>
                 </div>
               </div>
             </motion.div>
