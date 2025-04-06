@@ -1,10 +1,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Car, Music, ShoppingBag, Plus, Trophy } from "lucide-react";
+import { Music, ShoppingBag, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
-type CategoryType = "cars" | "popstars" | "shoes" | "sports" | "all";
+type CategoryType = "albums" | "sneakers" | "all";
 
 interface CategoryFilterProps {
   selectedCategory: CategoryType;
@@ -19,10 +19,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
 }) => {
   const categories = [
     { id: "all", name: "All", icon: null },
-    { id: "cars", name: "Cars", icon: <Car className="w-4 h-4" /> },
-    { id: "popstars", name: "Pop Stars", icon: <Music className="w-4 h-4" /> },
-    { id: "shoes", name: "Shoes", icon: <ShoppingBag className="w-4 h-4" /> },
-    { id: "sports", name: "Sports", icon: <Trophy className="w-4 h-4" /> },
+    { id: "albums", name: "Albums", icon: <Music className="w-4 h-4" /> },
+    { id: "sneakers", name: "Sneakers", icon: <ShoppingBag className="w-4 h-4" /> },
   ];
 
   return (
@@ -49,7 +47,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
             onClick={() => setSelectedCategory(category.id as CategoryType)}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
               selectedCategory === category.id
-                ? "bg-gradient-to-r from-ghibli-green to-ghibli-darkgreen text-white"
+                ? "bg-gradient-to-r from-indigo-600 to-pink-500 text-white"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
             whileHover={{ scale: 1.05 }}

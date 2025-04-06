@@ -8,7 +8,7 @@ import { usePosterData } from "@/hooks/usePosterData";
 import { Poster } from "@/data/posters";
 
 export const PosterGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "shoes" | "sports" | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<"albums" | "sneakers" | "all">("all");
   const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
   const { posters, isAdmin } = usePosterData();
   const { toast } = useToast();
@@ -57,15 +57,6 @@ export const PosterGrid = () => {
     };
   }, [selectedCategory]);
 
-  const handleAddToCart = (poster: Poster) => {
-    toast({
-      title: "Added to Cart",
-      description: `${poster.title} has been added to your cart.`,
-      className: "bg-ghibli-green text-white",
-    });
-    setOpenPopoverId(null);
-  };
-
   // Filter out duplicates by title and then by category
   const uniqueTitles = new Set();
   const uniquePosters = posters.filter(poster => {
@@ -101,7 +92,6 @@ export const PosterGrid = () => {
             <PosterCard
               key={poster.id}
               poster={poster}
-              onAddToCart={handleAddToCart}
               openPopoverId={openPopoverId}
               setOpenPopoverId={setOpenPopoverId}
             />

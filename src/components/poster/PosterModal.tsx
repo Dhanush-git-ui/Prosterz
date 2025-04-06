@@ -1,22 +1,29 @@
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X } from "lucide-react";
 import { Poster } from "@/data/posters";
 import { DialogContent, DialogOverlay, Dialog } from "@/components/ui/dialog";
+import { useCart } from "@/context/CartContext";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface PosterModalProps {
   poster: Poster;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (poster: Poster) => void;
 }
 
-export const PosterModal = ({ 
-  poster, 
-  isOpen, 
-  onClose, 
-  onAddToCart 
-}: PosterModalProps) => {
+export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
+  const [selectedSize, setSelectedSize] = useState<"A4" | "A3">("A4");
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    addToCart(poster, selectedSize);
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <AnimatePresence>
@@ -52,36 +59,44 @@ export const PosterModal = ({
                   <p className="text-gray-600">Category: {poster.category}</p>
                   
                   <div className="space-y-3 mt-6">
-                    <h3 className="text-lg font-medium">Available Sizes:</h3>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">A4</span>
-                          <span className="text-sm text-gray-500">(210 × 297 mm)</span>
+                    <h3 className="text-lg font-medium">Select Size:</h3>
+                    <RadioGroup 
+                      value={selectedSize} 
+                      onValueChange={(value) => setSelectedSize(value as "A4" | "A3")}
+                      className="space-y-3"
+                    >
+                      <div className="flex items-center justify-between space-x-2">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="A4" id="a4" />
+                          <Label htmlFor="a4" className="flex items-center gap-2">
+                            <span>A4</span>
+                            <span className="text-sm text-gray-500">(210 × 297 mm)</span>
+                          </Label>
                         </div>
                         <span className="font-semibold">₹{poster.sizes.A4.replace('$', '')}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">A3</span>
-                          <span className="text-sm text-gray-500">(297 × 420 mm)</span>
+                      <div className="flex items-center justify-between space-x-2">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="A3" id="a3" />
+                          <Label htmlFor="a3" className="flex items-center gap-2">
+                            <span>A3</span>
+                            <span className="text-sm text-gray-500">(297 × 420 mm)</span>
+                          </Label>
                         </div>
                         <span className="font-semibold">₹{poster.sizes.A3.replace('$', '')}</span>
                       </div>
-                    </div>
+                    </RadioGroup>
                   </div>
                 </div>
                 
                 <div className="mt-8">
-                  <motion.button
-                    onClick={() => onAddToCart(poster)}
-                    className="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full flex items-center justify-center gap-2"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <Button
+                    onClick={handleAddToCart}
+                    className="w-full px-6 py-6 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full flex items-center justify-center gap-2"
                   >
                     <ShoppingCart size={18} />
                     Add to Cart
-                  </motion.button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
