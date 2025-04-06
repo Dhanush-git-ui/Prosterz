@@ -12,7 +12,6 @@ export const usePosterData = () => {
       setIsAdmin(true);
     }
     
-    // Make all posters available for cart
     const postersWithCart = defaultPosters.map(poster => ({
       ...poster,
       cartAvailable: true

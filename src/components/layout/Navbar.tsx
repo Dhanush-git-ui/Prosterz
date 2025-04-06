@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, User, UserPlus } from "lucide-react";
+import { LogIn, LogOut, User, UserPlus, Instagram, ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
 
 export const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,6 +21,7 @@ export const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { items, setCartOpen } = useCart();
 
   useEffect(() => {
     const authStatus = localStorage.getItem("isAuthenticated");
@@ -60,6 +62,27 @@ export const Navbar = () => {
     }
   };
 
+  const handleInstagramLogin = () => {
+    // In a real implementation, this would redirect to Instagram OAuth
+    toast({
+      title: "Instagram Login",
+      description: "Redirecting to Instagram for authentication...",
+    });
+
+    // For demo purposes, simulate login after 1 second
+    setTimeout(() => {
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("userEmail", "user@instagram.com");
+      setIsAuthenticated(true);
+      setUserEmail("user@instagram.com");
+      
+      toast({
+        title: "Logged in",
+        description: "Successfully logged in with Instagram.",
+      });
+    }, 1000);
+  };
+
   return (
     <motion.nav 
       initial={{ opacity: 0, y: -20 }}
@@ -85,21 +108,24 @@ export const Navbar = () => {
         
         <div className="hidden md:flex items-center gap-8">
           <a href="#posters" className="text-gray-700 hover:text-gray-900 font-medium">Posters</a>
-          <a href="#delivery" className="text-gray-700 hover:text-gray-900 font-medium">Delivery</a>
-          
-          {isAdmin && (
-            <motion.button 
-              onClick={handleAdminPoster}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-gray-700 hover:text-gray-900 font-medium"
-            >
-              Add Poster
-            </motion.button>
-          )}
+          <a href="#delivery" className="text-gray-700 hover:text-gray-900 font-medium">Contact</a>
         </div>
         
         <div className="flex items-center gap-4">
+          <motion.button 
+            onClick={() => setCartOpen(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative p-2"
+          >
+            <ShoppingCart className="text-gray-700" size={20} />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {items.length}
+              </span>
+            )}
+          </motion.button>
+
           {isAuthenticated ? (
             <Dialog>
               <DialogTrigger asChild>
@@ -118,7 +144,7 @@ export const Navbar = () => {
                   <DialogDescription>
                     {isAdmin 
                       ? "You are logged in as an administrator" 
-                      : "You are logged in as a user"}
+                      : "You are logged in with Instagram"}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="py-4">
@@ -144,28 +170,15 @@ export const Navbar = () => {
               </DialogContent>
             </Dialog>
           ) : (
-            <>
-              <Link to="/sign-in">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="hidden md:flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium"
-                >
-                  <LogIn size={16} />
-                  Sign In
-                </motion.button>
-              </Link>
-              <Link to="/sign-up">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium"
-                >
-                  <UserPlus size={16} />
-                  Sign Up
-                </motion.button>
-              </Link>
-            </>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleInstagramLogin}
+              className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium"
+            >
+              <Instagram size={16} />
+              Sign In with Instagram
+            </motion.button>
           )}
         </div>
       </div>

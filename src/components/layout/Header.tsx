@@ -19,7 +19,7 @@ export const Header = () => {
             Premium Quality <span className="bg-gradient-to-r from-indigo-600 to-pink-500 text-transparent bg-clip-text">Poster Collection</span>
           </h1>
           <p className="text-gray-600 text-lg md:text-xl mb-8">
-            Discover our curated collection of premium posters featuring iconic cars and legendary popstars.
+            Discover our curated collection of premium posters featuring iconic albums and legendary sneakers.
           </p>
           <motion.a 
             href="#posters"

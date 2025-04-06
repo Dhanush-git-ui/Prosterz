@@ -1,3 +1,4 @@
+
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
@@ -5,14 +6,12 @@ import { PosterModal } from "./PosterModal";
 
 interface PosterCardProps {
   poster: Poster;
-  onAddToCart: (poster: Poster) => void;
   openPopoverId: number | null;
   setOpenPopoverId: (id: number | null) => void;
 }
 
 export const PosterCard = ({ 
   poster, 
-  onAddToCart, 
   openPopoverId,
   setOpenPopoverId 
 }: PosterCardProps) => {
@@ -136,7 +135,6 @@ export const PosterCard = ({
         poster={poster}
         isOpen={isModalOpen}
         onClose={closeModal}
-        onAddToCart={onAddToCart}
       />
     </>
   );

@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AdminPoster from "./pages/AdminPoster";
 import NotFound from "./pages/NotFound";
+import { CartProvider } from "./context/CartContext";
 
 const queryClient = new QueryClient();
 
