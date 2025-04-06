@@ -8,7 +8,7 @@ import { usePosterData } from "@/hooks/usePosterData";
 import { Poster } from "@/data/posters";
 
 export const PosterGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "shoes" | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<"cars" | "popstars" | "shoes" | "sports" | "all">("all");
   const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
   const { posters, isAdmin } = usePosterData();
   const { toast } = useToast();

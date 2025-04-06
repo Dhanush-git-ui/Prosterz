@@ -95,3 +95,24 @@
   box-shadow: 0 0 0 3px rgba(139, 208, 180, 0.2);
   outline: none;
 }
+
+/* Ghibli-inspired floating leaves */
+.ghibli-leaf {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.6;
+  animation: float 10s ease-in-out infinite, spin 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-20px) translateX(10px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

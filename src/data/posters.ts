@@ -1,8 +1,9 @@
+
 export interface Poster {
   id: number;
   image: string;
   title: string;
-  category: "cars" | "popstars" | "shoes";
+  category: "cars" | "popstars" | "shoes" | "sports";
   sizes: {
     A4: string;
     A3: string;
@@ -140,118 +141,6 @@ export const defaultPosters: Poster[] = [
     cartAvailable: false
   },
   {
-    id: 17,
-    image: "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
-    title: "Lamborghini Aventador SVJ",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 18,
-    image: "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
-    title: "BMW M4 Nighthawk",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 19,
-    image: "/lovable-uploads/5eebaa3f-6875-4580-b7fa-b2e13fe7630e.png",
-    title: "Mazda RX-7 Spirit",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 20,
-    image: "/lovable-uploads/494cd1a5-593b-48c9-9f8d-90a8a52dc728.png",
-    title: "Lamborghini Revuelto LAMBO",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 21,
-    image: "/lovable-uploads/2d1b2d0a-1b4f-45cf-8388-905f15f44a6d.png",
-    title: "Ferrari LaFerrari Masterpiece",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 22,
-    image: "/lovable-uploads/a8b46723-86bf-4747-9599-9600f4cec148.png",
-    title: "Toyota GR Supra",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 23,
-    image: "/lovable-uploads/1836880e-b38f-470b-b38e-332b4a89e90c.png",
-    title: "Porsche 918 Spyder Elegance",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 24,
-    image: "/lovable-uploads/a9230ae5-f7f1-45b6-8170-45a1b584fc8c.png",
-    title: "BMW M3 Evolution",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 25,
-    image: "/lovable-uploads/7cc7b66b-fb61-4c00-ad48-63f49a035a00.png",
-    title: "Porsche 911 RWB",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 26,
-    image: "/lovable-uploads/50e1e322-7d76-4507-9465-ec9af542ff8f.png",
-    title: "BMW M4 GT4 Motorsport",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 27,
-    image: "/lovable-uploads/19cbeb0b-982a-4168-ae89-3c66f269d8b7.png",
-    title: "Porsche GT3 RS Heritage",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 28,
-    image: "/lovable-uploads/c9ae4602-7abc-4cf0-890c-3c83554475b7.png",
-    title: "Honda NSX-R Classic",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 29,
-    image: "/lovable-uploads/900f507c-7cb5-4735-a12c-58d03ba34d7b.png",
-    title: "Ford Mustang Classic",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
-    id: 30,
-    image: "/lovable-uploads/1e113fae-1117-432f-aed8-6c4c6f607cfd.png",
-    title: "Toyota Supra MK5",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
-  },
-  {
     id: 31,
     image: "/lovable-uploads/a569b8e9-7b2a-4f82-b56f-419f0e1b9698.png",
     title: "Nike Air Max 2023",
@@ -323,92 +212,101 @@ export const defaultPosters: Poster[] = [
     sizes: { A4: "$99", A3: "$109" },
     cartAvailable: false
   },
+  // Sports posters - New category
   {
-    id: 40,
-    image: "/lovable-uploads/a69b8046-49f0-493e-b520-3ae195f66319.png",
-    title: "Ford Mustang Vintage",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
+    id: 51,
+    image: "/lovable-uploads/40664825-d75d-4fea-b37f-fe44bb5f4b7a.png",
+    title: "Lionel Messi Miami",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 41,
-    image: "/lovable-uploads/a06cd3a1-9626-4fc2-94f7-7d27848b62fd.png",
-    title: "Supra MK5 Orange",
-    category: "cars",
-    sizes: { A4: "$89", A3: "$109" },
-    cartAvailable: false
+    id: 52,
+    image: "/lovable-uploads/43b706a3-82b0-4300-b78e-d3a924943f9c.png",
+    title: "Khabib Nurmagomedov",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 42,
-    image: "/lovable-uploads/81878a10-bcdb-48fa-8031-4e3acddb47b8.png",
-    title: "Nike Air Max 2023 Pink",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 53,
+    image: "/lovable-uploads/dd5ecb35-bb94-4f2e-bd47-146a387d5997.png",
+    title: "Cristiano Ronaldo",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 43,
-    image: "/lovable-uploads/e95eafe6-e351-42e7-a111-45cc67599a16.png",
-    title: "Nike One Step Ahead Red",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 54,
+    image: "/lovable-uploads/5a65e53c-04a2-429f-a8b6-efbbc6634dc4.png",
+    title: "Roman Reigns WWE",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 44,
-    image: "/lovable-uploads/f49cb557-f61f-43a5-b1e7-67cb218b3fcf.png",
-    title: "Airmax Retro Orange",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 55,
+    image: "/lovable-uploads/bb41d1d5-2fe9-4b9c-8621-b95387f99239.png",
+    title: "The Warden",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 45,
-    image: "/lovable-uploads/608ba133-6a5a-4173-8205-6ee83f8f7c6d.png",
-    title: "Lacoste Green Edition",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 56,
+    image: "/lovable-uploads/eda6d3a8-2d57-4561-9366-e7470b100e80.png",
+    title: "Neymar Junior",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 46,
-    image: "/lovable-uploads/3d98ecec-6e8c-41d3-83b1-f0ec51971ff6.png",
-    title: "Puma Pixel Art",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 57,
+    image: "/lovable-uploads/769f0c57-48c2-4aa3-941b-1ad2a9e08a42.png",
+    title: "Messi - The GOAT",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 47,
-    image: "/lovable-uploads/aa7fb0df-7ad6-41a3-9e61-5f83fe53d8a9.png",
-    title: "Nike High Sky",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 58,
+    image: "/lovable-uploads/de6927a4-557a-46de-a30e-bdc541160a98.png",
+    title: "Bongani Zungu",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 48,
-    image: "/lovable-uploads/9cb189f7-7e11-4d4a-94e0-e65245470f31.png",
-    title: "Nike Drip Edition Blue",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 59,
+    image: "/lovable-uploads/25b1acce-a971-4853-b98c-709a069676ff.png",
+    title: "Mbappé PSG",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 49,
-    image: "/lovable-uploads/b7d713b4-098a-4ccc-9ea1-c92ec06e083f.png",
-    title: "Nike Force Blue",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 60,
+    image: "/lovable-uploads/4b938b10-1b48-49d2-8b2f-420e5226a00c.png",
+    title: "Andre Drummond",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
   {
-    id: 50,
-    image: "/lovable-uploads/86398209-c105-471f-a2c0-04a6e33603e2.png",
-    title: "Yeezy Elevate Beige",
-    category: "shoes",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: false
+    id: 61,
+    image: "/lovable-uploads/00123ef7-cce4-433c-8fef-a2eb57b3e4a8.png",
+    title: "Zach Lavine Bulls",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   },
+  {
+    id: 62,
+    image: "/lovable-uploads/7d796f08-9c14-4580-a1e1-b4f47cff5dc8.png",
+    title: "John Cena",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  }
 ];
