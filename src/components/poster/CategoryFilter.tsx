@@ -1,10 +1,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Music, ShoppingBag, Plus } from "lucide-react";
+import { Music, ShoppingBag, Trophy, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
-type CategoryType = "albums" | "sneakers" | "all";
+type CategoryType = "albums" | "sneakers" | "sports" | "all";
 
 interface CategoryFilterProps {
   selectedCategory: CategoryType;
@@ -21,6 +21,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
     { id: "all", name: "All", icon: null },
     { id: "albums", name: "Albums", icon: <Music className="w-4 h-4" /> },
     { id: "sneakers", name: "Sneakers", icon: <ShoppingBag className="w-4 h-4" /> },
+    { id: "sports", name: "Sports", icon: <Trophy className="w-4 h-4" /> },
   ];
 
   return (
