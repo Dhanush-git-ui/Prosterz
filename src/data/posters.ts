@@ -3,7 +3,7 @@ export interface Poster {
   id: number;
   image: string;
   title: string;
-  category: "albums" | "sneakers" | "sports";
+  category: "albums" | "sneakers" | "sports" | "movies";
   sizes: {
     A4: string;
     A3: string;
@@ -144,7 +144,7 @@ export const defaultPosters: Poster[] = [
     cartAvailable: true
   },
   
-  // Sports - New Category
+  // Sports - Category
   {
     id: 51,
     image: "/lovable-uploads/0b5dadca-1197-403c-99fd-fcc7b62ad6d7.png",
@@ -240,6 +240,103 @@ export const defaultPosters: Poster[] = [
     category: "sports",
     sizes: { A4: "$89", A3: "$119" },
     cartAvailable: true
+  },
+  
+  // Movies - New Category
+  {
+    id: 71,
+    image: "/lovable-uploads/fe540ceb-2cd6-4485-98e4-1204dbdf978b.png",
+    title: "The Dark Knight",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 72,
+    image: "/lovable-uploads/28ffbc8a-4156-4835-8956-957c190fc839.png",
+    title: "Batman 2022",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 73,
+    image: "/lovable-uploads/63c03d35-c835-4c62-8e5b-cda5aadaf9fe.png",
+    title: "The Batman Red Rain",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 74,
+    image: "/lovable-uploads/7ffef464-ec3a-4831-bef3-a0204f36ef13.png",
+    title: "The Batman Silhouette",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 75,
+    image: "/lovable-uploads/f9b884cd-c240-406c-a6ec-e95e5955998e.png",
+    title: "Batman Red Mask",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 76,
+    image: "/lovable-uploads/e63512bf-5b06-4b29-b962-edf854d78a71.png",
+    title: "Batman Red Minimal",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 77,
+    image: "/lovable-uploads/edd80429-deb0-4b36-aca6-c6b3be53a214.png",
+    title: "The Batman Moon",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 78,
+    image: "/lovable-uploads/0353fa97-dd48-4d77-8aad-47f7e03bafc9.png",
+    title: "Iron Man II",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 79,
+    image: "/lovable-uploads/9986825d-308c-46cc-83e3-98a371b3952f.png",
+    title: "Black Panther",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 80,
+    image: "/lovable-uploads/23b6535c-6833-41ed-8341-c9f035b319da.png",
+    title: "Black Widow Minimal",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 81,
+    image: "/lovable-uploads/f39d8c51-56f4-4219-a6aa-6caf2a54d7a5.png",
+    title: "Venom: Let There Be Carnage",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 82,
+    image: "/lovable-uploads/3cffb21e-3b0e-4dcf-9ec8-ade5946106b3.png",
+    title: "Guardians of the Galaxy Vol. 2",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
   }
 ];
-

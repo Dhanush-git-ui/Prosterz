@@ -28,7 +28,7 @@ import { PreviewImagesGrid } from "./PreviewImagesGrid";
 // Form schema with validation
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
-  category: z.enum(["cars", "popstars", "shoes"]),
+  category: z.enum(["albums", "sneakers", "sports", "movies"]),
   price: z.string().min(1, "Price is required"),
   imageUrl: z.string().min(1, "Image URL is required"),
 });
@@ -48,7 +48,7 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      category: "cars",
+      category: "albums",
       price: "",
       imageUrl: "",
     },
@@ -118,7 +118,7 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
                 <div className="relative">
                   <FileType className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input 
-                    placeholder="e.g. Ferrari LaFerrari" 
+                    placeholder="e.g. The Dark Knight" 
                     className="pl-10" 
                     {...field} 
                   />
@@ -148,9 +148,10 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
                   </div>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="cars">Cars</SelectItem>
-                  <SelectItem value="popstars">Popstars</SelectItem>
-                  <SelectItem value="shoes">Shoes</SelectItem>
+                  <SelectItem value="albums">Albums</SelectItem>
+                  <SelectItem value="sneakers">Sneakers</SelectItem>
+                  <SelectItem value="sports">Sports</SelectItem>
+                  <SelectItem value="movies">Movies</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
