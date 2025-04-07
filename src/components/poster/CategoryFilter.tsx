@@ -8,7 +8,7 @@ type CategoryType = "albums" | "sneakers" | "sports" | "all";
 
 interface CategoryFilterProps {
   selectedCategory: CategoryType;
-  setSelectedCategory: (category: CategoryType) => void;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoryType>>;
   isAdmin?: boolean;
 }
 
