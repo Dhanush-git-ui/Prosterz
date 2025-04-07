@@ -29,7 +29,8 @@ import { PreviewImagesGrid } from "./PreviewImagesGrid";
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   category: z.enum(["albums", "sneakers", "sports", "movies"]),
-  price: z.string().min(1, "Price is required"),
+  priceA4: z.string().min(1, "A4 Price is required"),
+  priceA3: z.string().optional(),
   imageUrl: z.string().min(1, "Image URL is required"),
 });
 
@@ -49,7 +50,8 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
     defaultValues: {
       title: "",
       category: "albums",
-      price: "",
+      priceA4: "",
+      priceA3: "",
       imageUrl: "",
     },
   });
@@ -62,18 +64,26 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
   // Handle form submission
   const onSubmit = async (data: FormValues) => {
     try {
-      // Format price with $ if not included
-      const formattedPrice = data.price.startsWith("$") 
-        ? data.price 
-        : `$${data.price}`;
+      // Format prices with $ if not included
+      const formattedPriceA4 = data.priceA4.startsWith("$") 
+        ? data.priceA4 
+        : `$${data.priceA4}`;
+      
+      const formattedPriceA3 = data.priceA3 && data.priceA3.length > 0
+        ? (data.priceA3.startsWith("$") ? data.priceA3 : `$${data.priceA3}`)
+        : formattedPriceA4; // Use A4 price as default if A3 is not provided
       
       // Create new poster object
       const newPoster = {
         id: Date.now(), // Generate unique ID
         title: data.title,
         category: data.category,
-        price: formattedPrice,
         image: data.imageUrl,
+        sizes: {
+          A4: formattedPriceA4,
+          A3: formattedPriceA3,
+        },
+        cartAvailable: true
       };
       
       // Get existing posters from localStorage or initialize empty array
@@ -90,11 +100,8 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
         description: "New poster has been added.",
       });
       
-      // Reset form
+      // Reset form but stay on the page to allow adding more posters
       form.reset();
-      
-      // Redirect to home page
-      navigate("/");
     } catch (error) {
       console.error("Error adding poster:", error);
       toast({
@@ -159,26 +166,49 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input 
-                    placeholder="24.99" 
-                    className="pl-10" 
-                    {...field} 
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="priceA4"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>A4 Price</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input 
+                      placeholder="79" 
+                      className="pl-10" 
+                      {...field} 
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="priceA3"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>A3 Price (Optional)</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input 
+                      placeholder="109" 
+                      className="pl-10" 
+                      {...field} 
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -216,6 +246,17 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
         >
           Add Poster
         </Button>
+
+        <div className="text-center mt-4">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => navigate('/')}
+            className="mx-auto"
+          >
+            View All Posters
+          </Button>
+        </div>
       </form>
     </Form>
   );

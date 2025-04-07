@@ -112,10 +112,11 @@
   @apply bg-ghibli-gradient text-white font-medium rounded-full px-6 py-2 shadow-md hover:shadow-lg transition-all;
 }
 
+/* Remove the width limit for #root to make it full width */
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
