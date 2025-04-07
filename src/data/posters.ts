@@ -1,4 +1,3 @@
-
 export interface Poster {
   id: number;
   image: string;
@@ -241,6 +240,14 @@ export const defaultPosters: Poster[] = [
     sizes: { A4: "$89", A3: "$119" },
     cartAvailable: true
   },
+  {
+    id: 63,
+    image: "/lovable-uploads/1493488f-7022-461e-aee2-b53d0bd52458.png",
+    title: "LeBron James All-Time Scoring",
+    category: "sports",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
   
   // Movies - New Category
   {
@@ -335,6 +342,136 @@ export const defaultPosters: Poster[] = [
     id: 82,
     image: "/lovable-uploads/3cffb21e-3b0e-4dcf-9ec8-ade5946106b3.png",
     title: "Guardians of the Galaxy Vol. 2",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  
+  // Add new Marvel movie posters
+  {
+    id: 83,
+    image: "/lovable-uploads/f0bd8ddd-4dbc-42d7-a618-fcabcbbf4c37.png",
+    title: "Thor: Ragnarok",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 84,
+    image: "/lovable-uploads/fc8de01c-fb90-4a92-bf57-862d43c75f1c.png",
+    title: "Guardians of the Galaxy",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 85,
+    image: "/lovable-uploads/6cbb5bc7-3909-4b89-8826-e25750e6c49a.png",
+    title: "Captain America: Civil War",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 86,
+    image: "/lovable-uploads/3adfabc8-3fa5-484f-8bcc-147c4c0bbaef.png",
+    title: "Spider-Man: No Way Home",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 87,
+    image: "/lovable-uploads/fd77597b-c59a-4009-9d82-3cea717e7e4e.png",
+    title: "Civil War Split",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 88,
+    image: "/lovable-uploads/5b5dedf9-f44d-40fc-961d-7850cea7791f.png",
+    title: "Avengers: Age of Ultron",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 89,
+    image: "/lovable-uploads/0320f544-de2f-400a-ac83-019efd25bee9.png",
+    title: "Infinity War",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 90,
+    image: "/lovable-uploads/e380c01d-7ef4-4fce-8769-c36ece8fa775.png",
+    title: "Avengers: Age of Ultron Art",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 91,
+    image: "/lovable-uploads/11f1513f-44bc-4f63-aea1-15c5cabb8fd1.png",
+    title: "The Avengers",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 92,
+    image: "/lovable-uploads/84451b26-a69e-48c8-a9c9-9d91a529feda.png",
+    title: "Avengers: Endgame",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 93,
+    image: "/lovable-uploads/4ea259e1-83ad-4731-8219-3e06947f28b5.png",
+    title: "Marvel Comics Collection",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 94,
+    image: "/lovable-uploads/9201a0eb-0398-42d7-913c-8ce2d7f3d2b4.png",
+    title: "Shang-Chi: Legend of the Ten Rings",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 95,
+    image: "/lovable-uploads/4eea65bf-5605-409f-9981-1bed6f902046.png",
+    title: "Moon Knight Comic",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 96,
+    image: "/lovable-uploads/88cc9c07-e9dd-42fd-b9bb-3afb40565216.png",
+    title: "Eternals",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 97,
+    image: "/lovable-uploads/9b7d680e-6378-4edc-b11a-9435dd2ed2a8.png",
+    title: "Moon Knight: Gods and Monsters",
+    category: "movies",
+    sizes: { A4: "$89", A3: "$119" },
+    cartAvailable: true
+  },
+  {
+    id: 98,
+    image: "/lovable-uploads/b80121fb-6059-4105-babf-ca3b03edba9e.png",
+    title: "Captain America: The Winter Soldier",
     category: "movies",
     sizes: { A4: "$89", A3: "$119" },
     cartAvailable: true
