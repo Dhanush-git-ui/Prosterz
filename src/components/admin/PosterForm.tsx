@@ -29,6 +29,7 @@ import { PreviewImagesGrid } from "./PreviewImagesGrid";
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   category: z.enum(["albums", "sneakers", "sports", "movies"]),
+  subcategory: z.enum(["dc", "marvel", "other"]).optional(),
   priceA4: z.string().min(1, "A4 Price is required"),
   priceA3: z.string().optional(),
   imageUrl: z.string().min(1, "Image URL is required"),
@@ -50,12 +51,16 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
     defaultValues: {
       title: "",
       category: "albums",
+      subcategory: undefined,
       priceA4: "",
       priceA3: "",
       imageUrl: "",
     },
   });
 
+  // Get the current selected category
+  const currentCategory = form.watch("category");
+  
   // Handle selecting a preview image
   const handleSelectPreviewImage = (imageUrl: string) => {
     form.setValue("imageUrl", imageUrl);
@@ -78,6 +83,7 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
         id: Date.now(), // Generate unique ID
         title: data.title,
         category: data.category,
+        subcategory: data.subcategory,
         image: data.imageUrl,
         sizes: {
           A4: formattedPriceA4,
@@ -143,7 +149,12 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
             <FormItem>
               <FormLabel>Category</FormLabel>
               <Select 
-                onValueChange={field.onChange} 
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  if (value !== "movies") {
+                    form.setValue("subcategory", undefined);
+                  }
+                }} 
                 defaultValue={field.value}
               >
                 <FormControl>
@@ -165,6 +176,37 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
             </FormItem>
           )}
         />
+
+        {currentCategory === "movies" && (
+          <FormField
+            control={form.control}
+            name="subcategory"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Movie Universe</FormLabel>
+                <Select 
+                  onValueChange={field.onChange} 
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <div className="relative">
+                      <Film className="absolute left-3 top-3 h-4 w-4 text-gray-400 z-10" />
+                      <SelectTrigger className="pl-10">
+                        <SelectValue placeholder="Select universe" />
+                      </SelectTrigger>
+                    </div>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="dc">DC Comics</SelectItem>
+                    <SelectItem value="marvel">Marvel</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField

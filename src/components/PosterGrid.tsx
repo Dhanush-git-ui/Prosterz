@@ -8,7 +8,7 @@ import { usePosterData } from "@/hooks/usePosterData";
 import { Poster } from "@/data/posters";
 
 export const PosterGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState<"albums" | "sneakers" | "sports" | "movies" | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<"albums" | "sneakers" | "sports" | "movies" | "marvel" | "dc" | "all">("all");
   const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
   const { posters, isAdmin } = usePosterData();
   const { toast } = useToast();
@@ -57,19 +57,26 @@ export const PosterGrid = () => {
     };
   }, [selectedCategory]);
 
-  // Filter out duplicates by title and then by category
+  // Filter posters based on selected category and subcategory
+  const filteredPosters = posters.filter(poster => {
+    if (selectedCategory === "all") {
+      return true;
+    } else if (selectedCategory === "dc" || selectedCategory === "marvel") {
+      return poster.category === "movies" && poster.subcategory === selectedCategory;
+    } else {
+      return poster.category === selectedCategory;
+    }
+  });
+
+  // Filter out duplicates by title
   const uniqueTitles = new Set();
-  const uniquePosters = posters.filter(poster => {
+  const uniquePosters = filteredPosters.filter(poster => {
     if (!uniqueTitles.has(poster.title)) {
       uniqueTitles.add(poster.title);
       return true;
     }
     return false;
   });
-
-  const filteredPosters = selectedCategory === "all" 
-    ? uniquePosters 
-    : uniquePosters.filter(poster => poster.category === selectedCategory);
 
   return (
     <div id="poster-grid-container" className="relative">
@@ -88,7 +95,7 @@ export const PosterGrid = () => {
           transition={{ duration: 0.3 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
         >
-          {filteredPosters.map((poster) => (
+          {uniquePosters.map((poster) => (
             <PosterCard
               key={poster.id}
               poster={poster}

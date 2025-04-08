@@ -15,7 +15,7 @@ const Index = () => {
 
       <main className="w-full">
         <section id="posters" className="py-20 bg-white w-full">
-          <div className="container mx-auto px-4 md:px-6 max-w-full">
+          <div className="container mx-auto px-4 md:px-6 max-w-[1600px]">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ const Index = () => {
         <FeaturesSection />
 
         <section id="delivery" className="py-20 bg-gradient-to-br from-indigo-50 to-pink-50 relative overflow-hidden w-full">
-          <div className="container mx-auto px-4 md:px-6 max-w-full">
+          <div className="container mx-auto px-4 md:px-6 max-w-[1600px]">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
