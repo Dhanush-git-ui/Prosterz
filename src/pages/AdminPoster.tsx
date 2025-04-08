@@ -1,11 +1,18 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useAdminAuth } from "@/components/admin/useAdminAuth";
 import { PosterForm } from "@/components/admin/PosterForm";
+import { DragDropUpload } from "@/components/admin/DragDropUpload";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const AdminPoster = () => {
   const { isAdmin } = useAdminAuth();
+  const navigate = useNavigate();
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  
   const previewImages = [
     "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
     "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
@@ -44,6 +51,10 @@ const AdminPoster = () => {
     "/lovable-uploads/86398209-c105-471f-a2c0-04a6e33603e2.png",
   ];
 
+  const handleImageUploaded = (imageUrl: string) => {
+    setUploadedImage(imageUrl);
+  };
+
   if (!isAdmin) {
     return null; // Don't render anything while checking permissions
   }
@@ -57,13 +68,30 @@ const AdminPoster = () => {
         className="container mx-auto px-6"
       >
         <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Add New Poster</h1>
-            <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
-            <p className="text-gray-600 mt-4">Fill in the details to add a new poster to the collection.</p>
+          <div className="flex items-center mb-6">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate('/')} 
+              className="mr-2"
+            >
+              <ArrowLeft size={18} />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-1">Add New Poster</h1>
+              <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <p className="text-gray-600 mb-4">Upload your poster image by dragging and dropping or clicking the area below.</p>
+            <DragDropUpload onImageUploaded={handleImageUploaded} />
           </div>
 
-          <PosterForm previewImages={previewImages} />
+          <PosterForm 
+            previewImages={uploadedImage ? [...previewImages, uploadedImage] : previewImages} 
+            initialImageUrl={uploadedImage || ""}
+          />
         </div>
       </motion.div>
     </div>

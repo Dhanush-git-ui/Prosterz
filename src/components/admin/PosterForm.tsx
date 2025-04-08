@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { ImagePlus, Tag, FileType, DollarSign, Film } from "lucide-react"; // Added Film import
+import { ImagePlus, Tag, FileType, DollarSign, Film } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -39,9 +39,10 @@ export type FormValues = z.infer<typeof formSchema>;
 
 interface PosterFormProps {
   previewImages: string[];
+  initialImageUrl?: string;
 }
 
-export const PosterForm = ({ previewImages }: PosterFormProps) => {
+export const PosterForm = ({ previewImages, initialImageUrl = "" }: PosterFormProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -54,7 +55,7 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
       subcategory: undefined,
       priceA4: "",
       priceA3: "",
-      imageUrl: "",
+      imageUrl: initialImageUrl,
     },
   });
 
@@ -116,7 +117,14 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
       });
       
       // Reset form but stay on the page to allow adding more posters
-      form.reset();
+      form.reset({
+        title: "",
+        category: "albums",
+        subcategory: undefined,
+        priceA4: "",
+        priceA3: "",
+        imageUrl: "",
+      });
     } catch (error) {
       console.error("Error adding poster:", error);
       toast({
