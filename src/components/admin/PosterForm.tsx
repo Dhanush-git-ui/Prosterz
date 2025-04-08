@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { ImagePlus, Tag, FileType, DollarSign } from "lucide-react";
+import { ImagePlus, Tag, FileType, DollarSign, Film } from "lucide-react"; // Added Film import
 import {
   Form,
   FormControl,
@@ -74,9 +74,18 @@ export const PosterForm = ({ previewImages }: PosterFormProps) => {
         ? data.priceA4 
         : `$${data.priceA4}`;
       
+      // Set default A3 price based on category and subcategory
+      let defaultA3Price = "";
+      if (data.category === "movies" && (data.subcategory === "dc" || data.subcategory === "marvel")) {
+        defaultA3Price = "$109";
+      } else {
+        // For other categories, default to A4 price
+        defaultA3Price = formattedPriceA4;
+      }
+      
       const formattedPriceA3 = data.priceA3 && data.priceA3.length > 0
         ? (data.priceA3.startsWith("$") ? data.priceA3 : `$${data.priceA3}`)
-        : formattedPriceA4; // Use A4 price as default if A3 is not provided
+        : defaultA3Price;
       
       // Create new poster object
       const newPoster = {
