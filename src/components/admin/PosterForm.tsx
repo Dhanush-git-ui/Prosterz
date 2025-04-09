@@ -91,6 +91,7 @@ export const PosterForm = ({
         <ImageUrlField 
           control={form.control}
           getValues={form.getValues}
+          setValue={form.setValue}
           previewImages={previewImages}
           onSelectImage={handleSelectPreviewImage}
         />
@@ -99,6 +100,7 @@ export const PosterForm = ({
         <FormActions 
           isSubmitting={isSubmitting} 
           isEditMode={editMode} 
+          onSave={form.handleSubmit(onSubmit)}
         />
       </form>
     </Form>

@@ -1,5 +1,6 @@
+
 import React from "react";
-import { Control, UseFormGetValues } from "react-hook-form";
+import { Control, UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { ImagePlus, Link } from "lucide-react";
 import {
   FormControl,
@@ -15,6 +16,7 @@ import { PosterFormValues } from "./PosterFormSchema";
 interface ImageUrlFieldProps {
   control: Control<PosterFormValues>;
   getValues: UseFormGetValues<PosterFormValues>;
+  setValue: UseFormSetValue<PosterFormValues>;
   previewImages: string[];
   onSelectImage: (imageUrl: string) => void;
 }
@@ -22,13 +24,21 @@ interface ImageUrlFieldProps {
 export const ImageUrlField = ({ 
   control, 
   getValues, 
+  setValue,
   previewImages, 
   onSelectImage 
 }: ImageUrlFieldProps) => {
   const handleLocalFilePath = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value && value.includes(":\\")) {
-      console.log("Local file path entered:", value);
+    if (value && (value.includes(":\\") || value.includes("/"))) {
+      console.log("Local file path detected:", value);
+      
+      // For demonstration purposes, create a placeholder URL for local files
+      // In a real app, you would upload the file to a server and get a URL
+      if (!value.startsWith("http") && !value.startsWith("data:") && !value.startsWith("/")) {
+        // Create a fallback image URL for local files
+        setValue("imageUrl", "/placeholder.svg");
+      }
     }
   };
 

@@ -13,18 +13,11 @@ interface FormActionsProps {
 export const FormActions = ({ isSubmitting = false, isEditMode = false, onSave }: FormActionsProps) => {
   const navigate = useNavigate();
   
-  const handleSave = () => {
-    if (onSave) {
-      onSave();
-    }
-  };
-  
   return (
     <>
       <Button 
         type="submit" 
         disabled={isSubmitting}
-        onClick={handleSave}
         className="w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600"
       >
         {isSubmitting ? (isEditMode ? "Saving..." : "Adding...") : (
