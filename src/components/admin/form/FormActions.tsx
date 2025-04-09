@@ -2,6 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
 
 interface FormActionsProps {
   isSubmitting?: boolean;
@@ -24,10 +25,11 @@ export const FormActions = ({ isSubmitting = false }: FormActionsProps) => {
         <Button 
           type="button" 
           variant="outline" 
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/admin/dashboard')}
           className="mx-auto"
         >
-          View All Posters
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
         </Button>
       </div>
     </>

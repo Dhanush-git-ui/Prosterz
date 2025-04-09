@@ -77,16 +77,10 @@ export const usePosterForm = ({ initialImageUrl = "" }: UsePosterFormProps) => {
         title: "Success!",
         description: "New poster has been added.",
       });
+
+      // Navigate to the admin dashboard after successful submission
+      navigate("/admin/dashboard");
       
-      // Reset form but stay on the page to allow adding more posters
-      form.reset({
-        title: "",
-        category: "albums",
-        subcategory: undefined,
-        priceA4: "",
-        priceA3: "",
-        imageUrl: "",
-      });
     } catch (error) {
       console.error("Error adding poster:", error);
       toast({

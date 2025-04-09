@@ -1,66 +1,80 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Music, ShoppingBag, Trophy, Film, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
-
-type CategoryType = "albums" | "sneakers" | "sports" | "movies" | "marvel" | "dc" | "all";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { FilePlus, LayoutDashboard } from "lucide-react";
 
 interface CategoryFilterProps {
-  selectedCategory: CategoryType;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<CategoryType>>;
+  selectedCategory: "all" | "albums" | "sneakers" | "sports" | "movies" | "marvel" | "dc";
+  setSelectedCategory: (category: "all" | "albums" | "sneakers" | "sports" | "movies" | "marvel" | "dc") => void;
   isAdmin?: boolean;
 }
 
-export const CategoryFilter: React.FC<CategoryFilterProps> = ({
+export const CategoryFilter = ({
   selectedCategory,
   setSelectedCategory,
   isAdmin = false,
-}) => {
+}: CategoryFilterProps) => {
+  const navigate = useNavigate();
+
+  const handleCategoryChange = (category: "all" | "albums" | "sneakers" | "sports" | "movies" | "marvel" | "dc") => {
+    setSelectedCategory(category);
+  };
+
   const categories = [
-    { id: "all", name: "All", icon: null },
-    { id: "albums", name: "Albums", icon: <Music className="w-4 h-4" /> },
-    { id: "sneakers", name: "Sneakers", icon: <ShoppingBag className="w-4 h-4" /> },
-    { id: "sports", name: "Sports", icon: <Trophy className="w-4 h-4" /> },
-    { id: "movies", name: "All Movies", icon: <Film className="w-4 h-4" /> },
-    { id: "dc", name: "DC Comics", icon: <Film className="w-4 h-4" /> },
-    { id: "marvel", name: "Marvel", icon: <Film className="w-4 h-4" /> },
-  ];
+    { id: "all", label: "All" },
+    { id: "albums", label: "Albums" },
+    { id: "sneakers", label: "Sneakers" },
+    { id: "sports", label: "Sports" },
+    { id: "movies", label: "Movies" },
+    { id: "marvel", label: "Marvel" },
+    { id: "dc", label: "DC Comics" },
+  ] as const;
 
   return (
-    <div className="mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold text-gray-800">Explore Posters</h2>
-        {isAdmin && (
-          <Link to="/admin/add-poster">
+    <div className="mb-10 flex flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-2">
+          {categories.map((category) => (
             <motion.button
+              key={category.id}
+              onClick={() => handleCategoryChange(category.id)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                selectedCategory === category.id
+                  ? "bg-gradient-to-r from-indigo-500 to-pink-400 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-ghibli-green to-ghibli-darkgreen text-white rounded-full text-sm"
             >
-              <Plus className="w-4 h-4" />
-              Add Poster
+              {category.label}
             </motion.button>
-          </Link>
+          ))}
+        </div>
+
+        {isAdmin && (
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/admin/dashboard")}
+              className="gap-1 items-center border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
+            >
+              <LayoutDashboard className="h-4 w-4 mr-1" />
+              Admin Dashboard
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/admin/add-poster")}
+              className="gap-1 items-center border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
+            >
+              <FilePlus className="h-4 w-4 mr-1" />
+              Add New Poster
+            </Button>
+          </div>
         )}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <motion.button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id as CategoryType)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
-              selectedCategory === category.id
-                ? "bg-gradient-to-r from-indigo-600 to-pink-500 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {category.icon}
-            {category.name}
-          </motion.button>
-        ))}
       </div>
     </div>
   );
