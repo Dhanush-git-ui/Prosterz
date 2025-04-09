@@ -7,18 +7,6 @@ export const usePosterData = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Extract unique categories from posters
-  const categories = Array.from(new Set(posters.map(poster => poster.category)));
-  
-  // Get subcategories for movies
-  const movieSubcategories = Array.from(
-    new Set(
-      posters
-        .filter(poster => poster.category === "movies" && poster.subcategory)
-        .map(poster => poster.subcategory)
-    )
-  );
-
   useEffect(() => {
     // Check if user is admin
     const userRole = localStorage.getItem("userRole");
@@ -39,11 +27,30 @@ export const usePosterData = () => {
     setIsLoading(false);
   }, []);
 
+  // Extract unique categories from posters
+  const allCategories = Array.from(new Set(posters.map(poster => poster.category)));
+  
+  // Get custom categories from localStorage
+  const customCategories = JSON.parse(localStorage.getItem("customCategories") || "[]");
+  
+  // Merge default and custom categories
+  const categories = Array.from(new Set([...allCategories, ...customCategories]));
+  
+  // Get subcategories for movies
+  const movieSubcategories = Array.from(
+    new Set(
+      posters
+        .filter(poster => poster.category === "movies" && poster.subcategory)
+        .map(poster => poster.subcategory)
+    )
+  );
+
   return { 
     posters, 
     isAdmin, 
     isLoading, 
     categories,
-    movieSubcategories
+    movieSubcategories,
+    setPosters
   };
 };

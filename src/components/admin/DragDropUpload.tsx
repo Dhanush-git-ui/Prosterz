@@ -1,18 +1,25 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload, Image, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface DragDropUploadProps {
   onImageUploaded: (imageUrl: string) => void;
+  initialImage?: string;
 }
 
-export const DragDropUpload = ({ onImageUploaded }: DragDropUploadProps) => {
+export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(initialImage || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (initialImage) {
+      setUploadedImage(initialImage);
+    }
+  }, [initialImage]);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

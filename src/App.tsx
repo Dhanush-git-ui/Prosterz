@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import { CartProvider } from "./context/CartContext";
 import { ShoppingCart } from "./components/cart/ShoppingCart";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+import EditPoster from "./pages/EditPoster";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/admin/add-poster" element={<AdminPoster />} />
+              <Route path="/admin/edit-poster/:id" element={<EditPoster />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
