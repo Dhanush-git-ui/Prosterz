@@ -59,10 +59,13 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       
       // Process local file path if needed
       let imageUrl = data.imageUrl;
-      if (imageUrl.includes(":\\") || imageUrl.includes("/")) {
+      
+      // Use a placeholder or online image if the path is local
+      if (imageUrl.includes(":\\") || (imageUrl.includes("/") && !imageUrl.startsWith("http") && !imageUrl.startsWith("/lovable-uploads") && !imageUrl.startsWith("/"))) {
         // For a real app, this would handle file uploads to a server
-        // For now, we'll use the provided URL as is
-        console.log("Using file path:", imageUrl);
+        // For now, we'll use a placeholder
+        console.log("Converting local path to web-accessible image:", imageUrl);
+        imageUrl = "/placeholder.svg";
       }
       
       // Create new poster object

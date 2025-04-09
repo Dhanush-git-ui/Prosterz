@@ -12,26 +12,49 @@ export const usePosterData = () => {
     const userRole = localStorage.getItem("userRole");
     setIsAdmin(userRole === "admin");
     
-    // Get posters from localStorage or use default posters
-    const storedPosters = localStorage.getItem("posters");
-    
-    if (storedPosters) {
-      try {
-        const parsedPosters = JSON.parse(storedPosters);
-        setPosters(parsedPosters);
-      } catch (error) {
-        console.error("Error parsing posters from localStorage:", error);
-        // If parsing fails, reset with default posters
+    try {
+      // Get posters from localStorage or use default posters
+      const storedPosters = localStorage.getItem("posters");
+      
+      if (storedPosters) {
+        try {
+          const parsedPosters = JSON.parse(storedPosters);
+          
+          // Make sure all posters have valid image URLs
+          const validatedPosters = parsedPosters.map((poster: Poster) => {
+            if (!poster.image || 
+                (poster.image.includes(":\\") || 
+                 (poster.image.includes("/") && 
+                  !poster.image.startsWith("http") && 
+                  !poster.image.startsWith("/lovable-uploads") &&
+                  !poster.image.startsWith("/")))) {
+              return {
+                ...poster,
+                image: "/placeholder.svg" 
+              };
+            }
+            return poster;
+          });
+          
+          setPosters(validatedPosters);
+          console.log("Loaded posters:", validatedPosters);
+        } catch (error) {
+          console.error("Error parsing posters from localStorage:", error);
+          // If parsing fails, reset with default posters
+          localStorage.setItem("posters", JSON.stringify(defaultPosters));
+          setPosters(defaultPosters);
+        }
+      } else {
+        // If no posters in localStorage, save default posters
         localStorage.setItem("posters", JSON.stringify(defaultPosters));
         setPosters(defaultPosters);
       }
-    } else {
-      // If no posters in localStorage, save default posters
-      localStorage.setItem("posters", JSON.stringify(defaultPosters));
+    } catch (error) {
+      console.error("Error loading posters:", error);
       setPosters(defaultPosters);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
   
   useEffect(() => {
