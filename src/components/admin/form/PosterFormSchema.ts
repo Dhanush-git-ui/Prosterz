@@ -11,4 +11,10 @@ export const posterFormSchema = z.object({
   imageUrl: z.string().min(1, "Image URL is required"),
 });
 
+// Custom schema for category creation
+export const categorySchema = z.object({
+  name: z.string().min(2, "Category name must be at least 2 characters"),
+});
+
 export type PosterFormValues = z.infer<typeof posterFormSchema>;
+export type CategoryFormValues = z.infer<typeof categorySchema>;

@@ -7,7 +7,7 @@ export const usePosterData = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  useEffect(() => {
+  const loadPosters = () => {
     // Check if user is admin
     const userRole = localStorage.getItem("userRole");
     setIsAdmin(userRole === "admin");
@@ -16,8 +16,15 @@ export const usePosterData = () => {
     const storedPosters = localStorage.getItem("posters");
     
     if (storedPosters) {
-      const parsedPosters = JSON.parse(storedPosters);
-      setPosters(parsedPosters);
+      try {
+        const parsedPosters = JSON.parse(storedPosters);
+        setPosters(parsedPosters);
+      } catch (error) {
+        console.error("Error parsing posters from localStorage:", error);
+        // If parsing fails, reset with default posters
+        localStorage.setItem("posters", JSON.stringify(defaultPosters));
+        setPosters(defaultPosters);
+      }
     } else {
       // If no posters in localStorage, save default posters
       localStorage.setItem("posters", JSON.stringify(defaultPosters));
@@ -25,13 +32,23 @@ export const usePosterData = () => {
     }
     
     setIsLoading(false);
+  };
+  
+  useEffect(() => {
+    loadPosters();
   }, []);
 
   // Extract unique categories from posters
   const allCategories = Array.from(new Set(posters.map(poster => poster.category)));
   
   // Get custom categories from localStorage
-  const customCategories = JSON.parse(localStorage.getItem("customCategories") || "[]");
+  let customCategories: string[] = [];
+  try {
+    customCategories = JSON.parse(localStorage.getItem("customCategories") || "[]");
+  } catch (error) {
+    console.error("Error parsing custom categories:", error);
+    localStorage.setItem("customCategories", JSON.stringify([]));
+  }
   
   // Merge default and custom categories
   const categories = Array.from(new Set([...allCategories, ...customCategories]));
@@ -45,12 +62,19 @@ export const usePosterData = () => {
     )
   );
 
+  // Function to update posters in state and localStorage
+  const updatePosters = (newPosters: Poster[]) => {
+    setPosters(newPosters);
+    localStorage.setItem("posters", JSON.stringify(newPosters));
+  };
+
   return { 
     posters, 
     isAdmin, 
     isLoading, 
     categories,
     movieSubcategories,
-    setPosters
+    setPosters: updatePosters,
+    refreshPosters: loadPosters
   };
 };

@@ -11,9 +11,10 @@ interface UsePosterFormProps {
   initialImageUrl?: string;
   editMode?: boolean;
   posterId?: number;
+  onSuccess?: () => void;
 }
 
-export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId }: UsePosterFormProps) => {
+export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId, onSuccess }: UsePosterFormProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,6 +36,7 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
   const onSubmit = async (data: PosterFormValues) => {
     try {
       setIsSubmitting(true);
+      console.log("Submitting form data:", data);
       
       // Format prices with ₹ if not included
       const formattedPriceA4 = data.priceA4.startsWith("₹") || data.priceA4.startsWith("$")
@@ -46,8 +48,9 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       if (data.category === "movies" && (data.subcategory === "dc" || data.subcategory === "marvel")) {
         defaultA3Price = "₹109";
       } else {
-        // For other categories, default to A4 price
-        defaultA3Price = formattedPriceA4;
+        // For other categories, default to A4 price + 30
+        const a4Price = parseInt(data.priceA4.replace(/[^\d]/g, ''));
+        defaultA3Price = a4Price ? `₹${a4Price + 30}` : formattedPriceA4;
       }
       
       const formattedPriceA3 = data.priceA3 && data.priceA3.length > 0
@@ -56,12 +59,10 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       
       // Process local file path if needed
       let imageUrl = data.imageUrl;
-      if (imageUrl.includes(":\\")) {
-        // This is where you would handle local file paths
-        // For now, we'll just use it as is, but in a production app,
-        // this would need to be handled differently
-        console.log("Using local file path:", imageUrl);
-        // In a real application, you'd upload this file to a server
+      if (imageUrl.includes(":\\") || imageUrl.includes("/")) {
+        // For a real app, this would handle file uploads to a server
+        // For now, we'll use the provided URL as is
+        console.log("Using file path:", imageUrl);
       }
       
       // Create new poster object
@@ -78,8 +79,13 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
         cartAvailable: true
       };
       
+      console.log("Creating poster object:", newPoster);
+      
       // Get existing posters from localStorage or initialize empty array
-      const existingPosters = JSON.parse(localStorage.getItem("posters") || "[]");
+      const existingPostersString = localStorage.getItem("posters");
+      const existingPosters = existingPostersString ? JSON.parse(existingPostersString) : [];
+      
+      console.log("Existing posters:", existingPosters);
       
       let updatedPosters;
       if (editMode && posterId) {
@@ -91,6 +97,8 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
         // Add new poster to array
         updatedPosters = [...existingPosters, newPoster];
       }
+      
+      console.log("Updated posters:", updatedPosters);
       
       // Save updated posters back to localStorage
       localStorage.setItem("posters", JSON.stringify(updatedPosters));
@@ -108,6 +116,10 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
           ? "Your poster has been updated successfully" 
           : "Your new poster has been added to the collection",
       });
+
+      if (onSuccess) {
+        onSuccess();
+      }
 
       // Navigate to the admin dashboard after successful submission
       navigate("/admin/dashboard");
@@ -131,7 +143,7 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
 
   return {
     form,
-    onSubmit: form.handleSubmit(onSubmit),
+    onSubmit,
     handleSelectPreviewImage,
     isSubmitting
   };
