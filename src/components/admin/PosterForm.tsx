@@ -11,11 +11,44 @@ import { usePosterForm } from "./hooks/usePosterForm";
 interface PosterFormProps {
   previewImages: string[];
   initialImageUrl?: string;
+  editMode?: boolean;
+  posterId?: number;
+  initialValues?: {
+    title: string;
+    category: string;
+    subcategory?: string;
+    priceA4: string;
+    priceA3: string;
+  };
 }
 
-export const PosterForm = ({ previewImages, initialImageUrl = "" }: PosterFormProps) => {
+export const PosterForm = ({ 
+  previewImages, 
+  initialImageUrl = "", 
+  editMode = false,
+  posterId,
+  initialValues
+}: PosterFormProps) => {
   // Use form hook for all the form logic
-  const { form, onSubmit, handleSelectPreviewImage, isSubmitting } = usePosterForm({ initialImageUrl });
+  const { form, onSubmit, handleSelectPreviewImage, isSubmitting } = usePosterForm({ 
+    initialImageUrl,
+    editMode,
+    posterId
+  });
+
+  // Set initial values if in edit mode
+  React.useEffect(() => {
+    if (editMode && initialValues) {
+      form.reset({
+        title: initialValues.title,
+        category: initialValues.category,
+        subcategory: initialValues.subcategory as any,
+        priceA4: initialValues.priceA4,
+        priceA3: initialValues.priceA3,
+        imageUrl: initialImageUrl,
+      });
+    }
+  }, [editMode, initialValues, initialImageUrl, form]);
   
   return (
     <Form {...form}>
@@ -42,7 +75,7 @@ export const PosterForm = ({ previewImages, initialImageUrl = "" }: PosterFormPr
         />
 
         {/* Form actions */}
-        <FormActions isSubmitting={isSubmitting} />
+        <FormActions isSubmitting={isSubmitting} isEditMode={editMode} />
       </form>
     </Form>
   );

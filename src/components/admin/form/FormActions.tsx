@@ -2,13 +2,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Save } from "lucide-react";
 
 interface FormActionsProps {
   isSubmitting?: boolean;
+  isEditMode?: boolean;
 }
 
-export const FormActions = ({ isSubmitting = false }: FormActionsProps) => {
+export const FormActions = ({ isSubmitting = false, isEditMode = false }: FormActionsProps) => {
   const navigate = useNavigate();
   
   return (
@@ -18,7 +19,12 @@ export const FormActions = ({ isSubmitting = false }: FormActionsProps) => {
         disabled={isSubmitting}
         className="w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600"
       >
-        {isSubmitting ? "Adding..." : "Add Poster"}
+        {isSubmitting ? (isEditMode ? "Saving..." : "Adding...") : (
+          <div className="flex items-center justify-center gap-2">
+            <Save className="h-4 w-4" />
+            {isEditMode ? "Save Poster" : "Add Poster"}
+          </div>
+        )}
       </Button>
 
       <div className="text-center mt-4">
