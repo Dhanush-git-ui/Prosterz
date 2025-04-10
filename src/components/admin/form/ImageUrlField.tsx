@@ -24,7 +24,10 @@ export const ImageUrlField = ({
       <PreviewImagesGrid 
         images={previewImages} 
         selectedImage={getValues("imageUrl")}
-        onSelectImage={onSelectImage}
+        onSelectImage={(imageUrl) => {
+          onSelectImage(imageUrl);
+          console.log("Selected image:", imageUrl);
+        }}
       />
     </div>
   );

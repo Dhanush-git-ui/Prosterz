@@ -22,12 +22,14 @@ export const usePosterData = () => {
           
           // Make sure all posters have valid image URLs
           const validatedPosters = parsedPosters.map((poster: Poster) => {
+            // Check if the image URL is valid
             if (!poster.image || 
-                (poster.image.includes(":\\") || 
-                 (poster.image.includes("/") && 
-                  !poster.image.startsWith("http") && 
-                  !poster.image.startsWith("/lovable-uploads") &&
-                  !poster.image.startsWith("/")))) {
+                poster.image.includes(":\\") || 
+                (poster.image.includes("/") && 
+                 !poster.image.startsWith("http") && 
+                 !poster.image.startsWith("/lovable-uploads") &&
+                 !poster.image.startsWith("/"))) {
+              console.log("Invalid image URL found:", poster.image);
               return {
                 ...poster,
                 image: "/placeholder.svg" 
