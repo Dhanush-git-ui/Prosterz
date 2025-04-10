@@ -46,6 +46,9 @@ export const PosterForm = ({
   // Set initial values if in edit mode
   useEffect(() => {
     if (editMode && initialValues) {
+      console.log("Setting initial form values:", initialValues);
+      console.log("Initial image URL:", initialImageUrl);
+      
       form.reset({
         title: initialValues.title,
         category: initialValues.category,
@@ -54,12 +57,25 @@ export const PosterForm = ({
         priceA3: initialValues.priceA3,
         imageUrl: initialImageUrl,
       });
+    } else if (initialImageUrl) {
+      // If we have an initial image URL, set it
+      console.log("Setting initial image URL:", initialImageUrl);
+      form.setValue("imageUrl", initialImageUrl);
     }
   }, [editMode, initialValues, initialImageUrl, form]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if image URL is selected
+    const imageUrl = form.getValues("imageUrl");
+    if (!imageUrl || imageUrl.trim() === "") {
+      toast.error("Please select an image for your poster");
+      return;
+    }
+    
     try {
+      console.log("Form submission - current values:", form.getValues());
       await form.handleSubmit(onSubmit)(e);
       if (!editMode) {
         toast.success("Poster added successfully!");

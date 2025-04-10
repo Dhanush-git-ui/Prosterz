@@ -32,6 +32,12 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
     },
   });
 
+  // Handle selecting a preview image
+  const handleSelectPreviewImage = (imageUrl: string) => {
+    console.log("Setting form image URL to:", imageUrl);
+    form.setValue("imageUrl", imageUrl);
+  };
+
   // Handle form submission
   const onSubmit = async (data: PosterFormValues) => {
     try {
@@ -57,14 +63,13 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
         ? (data.priceA3.startsWith("₹") || data.priceA3.startsWith("$") ? data.priceA3 : `₹${data.priceA3}`)
         : defaultA3Price;
       
-      // Process local file path if needed
+      // Make sure we have a valid image URL that's accessible
       let imageUrl = data.imageUrl;
+      console.log("Processing image URL:", imageUrl);
       
-      // Use a placeholder or online image if the path is local
-      if (imageUrl.includes(":\\") || (imageUrl.includes("/") && !imageUrl.startsWith("http") && !imageUrl.startsWith("/lovable-uploads") && !imageUrl.startsWith("/"))) {
-        // For a real app, this would handle file uploads to a server
-        // For now, we'll use a placeholder
-        console.log("Converting local path to web-accessible image:", imageUrl);
+      // Use a placeholder or online image if the path is local or invalid
+      if (!imageUrl || imageUrl.includes(":\\") || (imageUrl.includes("/") && !imageUrl.startsWith("http") && !imageUrl.startsWith("/lovable-uploads") && !imageUrl.startsWith("/"))) {
+        console.log("Invalid image path detected, using placeholder");
         imageUrl = "/placeholder.svg";
       }
       
@@ -137,11 +142,6 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  // Handle selecting a preview image
-  const handleSelectPreviewImage = (imageUrl: string) => {
-    form.setValue("imageUrl", imageUrl);
   };
 
   return {
