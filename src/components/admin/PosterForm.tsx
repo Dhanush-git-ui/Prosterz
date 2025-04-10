@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "@/components/ui/form";
 import { BasicInfoFields } from "./form/BasicInfoFields";
 import { CategoryFields } from "./form/CategoryFields";
@@ -33,9 +33,12 @@ export const PosterForm = ({
   initialValues,
   onSuccess
 }: PosterFormProps) => {
+  // Track uploaded image state
+  const [uploadedImage, setUploadedImage] = useState<string | null>(initialImageUrl || null);
+  
   // Use form hook for all the form logic
   const { form, onSubmit, handleSelectPreviewImage, isSubmitting } = usePosterForm({ 
-    initialImageUrl,
+    initialImageUrl: uploadedImage || initialImageUrl,
     editMode,
     posterId,
     onSuccess
@@ -57,12 +60,12 @@ export const PosterForm = ({
         priceA3: initialValues.priceA3,
         imageUrl: initialImageUrl,
       });
-    } else if (initialImageUrl) {
-      // If we have an initial image URL, set it
-      console.log("Setting initial image URL:", initialImageUrl);
-      form.setValue("imageUrl", initialImageUrl);
+    } else if (uploadedImage) {
+      // If we have an uploaded image URL, set it
+      console.log("Setting uploaded image URL:", uploadedImage);
+      form.setValue("imageUrl", uploadedImage);
     }
-  }, [editMode, initialValues, initialImageUrl, form]);
+  }, [editMode, initialValues, initialImageUrl, form, uploadedImage]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +88,13 @@ export const PosterForm = ({
       console.error("Form submission error:", error);
       toast.error("Failed to save poster. Please try again.");
     }
+  };
+  
+  // Handler for image uploads
+  const handleImageUploaded = (imageUrl: string) => {
+    console.log("Image uploaded:", imageUrl);
+    setUploadedImage(imageUrl);
+    form.setValue("imageUrl", imageUrl);
   };
   
   return (
@@ -110,6 +120,7 @@ export const PosterForm = ({
           setValue={form.setValue}
           previewImages={previewImages}
           onSelectImage={handleSelectPreviewImage}
+          uploadedImage={uploadedImage}
         />
 
         {/* Form actions */}
