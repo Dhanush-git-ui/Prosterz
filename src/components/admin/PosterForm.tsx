@@ -87,7 +87,7 @@ export const PosterForm = ({
         {/* Price fields */}
         <PriceFields control={form.control} />
         
-        {/* Image URL field and preview grid */}
+        {/* Image selection grid */}
         <ImageUrlField 
           control={form.control}
           getValues={form.getValues}
