@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { defaultPosters, Poster } from "@/data/posters";
+import { toast } from "sonner";
 
 export const usePosterData = () => {
   const [posters, setPosters] = useState<Poster[]>([]);
@@ -63,6 +64,26 @@ export const usePosterData = () => {
     loadPosters();
   }, []);
 
+  // Function to update posters in state and localStorage
+  const updatePosters = (newPosters: Poster[]) => {
+    setPosters(newPosters);
+    localStorage.setItem("posters", JSON.stringify(newPosters));
+  };
+
+  // Function to delete a poster by ID
+  const deletePoster = (posterId: number) => {
+    try {
+      const updatedPosters = posters.filter(poster => poster.id !== posterId);
+      updatePosters(updatedPosters);
+      toast.success("Poster deleted successfully");
+      return true;
+    } catch (error) {
+      console.error("Error deleting poster:", error);
+      toast.error("Failed to delete poster");
+      return false;
+    }
+  };
+
   // Extract unique categories from posters
   const allCategories = Array.from(new Set(posters.map(poster => poster.category)));
   
@@ -87,12 +108,6 @@ export const usePosterData = () => {
     )
   );
 
-  // Function to update posters in state and localStorage
-  const updatePosters = (newPosters: Poster[]) => {
-    setPosters(newPosters);
-    localStorage.setItem("posters", JSON.stringify(newPosters));
-  };
-
   return { 
     posters, 
     isAdmin, 
@@ -100,6 +115,7 @@ export const usePosterData = () => {
     categories,
     movieSubcategories,
     setPosters: updatePosters,
+    deletePoster,
     refreshPosters: loadPosters
   };
 };

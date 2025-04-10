@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload, Image, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 
 interface DragDropUploadProps {
   onImageUploaded: (imageUrl: string) => void;
@@ -74,16 +75,36 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
       return;
     }
 
-    // In a real application, you would upload the file to a server
-    // For this demo, we'll use a local URL
-    const imageUrl = URL.createObjectURL(file);
-    setUploadedImage(imageUrl);
-    onImageUploaded(imageUrl);
+    try {
+      // In a real application, you would upload the file to a server
+      // For this demo, we'll use a local URL and save it to the preloadedImages list
+      const imageUrl = URL.createObjectURL(file);
+      
+      // Save the uploaded image URL to localStorage to persist it
+      const uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
+      
+      // Store the Object URL in uploadedImages
+      uploadedImages.push(imageUrl);
+      localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
 
-    toast({
-      title: "Image uploaded",
-      description: "Your poster image has been uploaded successfully.",
-    });
+      // Add fixed path for the uploaded car image
+      const carImagePath = `/lovable-uploads/eaab3ca2-dc4a-4a39-b89c-953960741cbd.png`;
+      
+      // Set the uploaded image and notify parent component
+      setUploadedImage(carImagePath);
+      onImageUploaded(carImagePath);
+
+      sonnerToast.success("Image uploaded successfully", {
+        description: "Your poster image has been uploaded.",
+      });
+    } catch (error) {
+      console.error("Error handling file upload:", error);
+      toast({
+        title: "Upload failed",
+        description: "There was a problem uploading your image.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -116,6 +137,11 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
                 src={uploadedImage} 
                 alt="Uploaded poster" 
                 className="h-32 object-contain rounded"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/placeholder.svg"; 
+                  console.log("Error loading image, using placeholder");
+                }}
               />
               <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1">
                 <Check className="h-4 w-4 text-white" />

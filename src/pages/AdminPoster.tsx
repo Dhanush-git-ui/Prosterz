@@ -14,6 +14,9 @@ const AdminPoster = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   
   const previewImages = [
+    "/lovable-uploads/316a8e68-7581-4d0c-ad70-8354b83e62a8.png", // New car image
+    "/lovable-uploads/ef9498c3-3357-4277-8666-a35acb0170f1.png", // New car image 
+    "/lovable-uploads/eaab3ca2-dc4a-4a39-b89c-953960741cbd.png", // New car image
     "/lovable-uploads/97887c36-5bb5-45b3-b163-da34aafff753.png",
     "/lovable-uploads/167ca374-f186-466d-93b9-55ad3cf82d0c.png",
     "/lovable-uploads/5eebaa3f-6875-4580-b7fa-b2e13fe7630e.png",
@@ -52,6 +55,7 @@ const AdminPoster = () => {
   ];
 
   const handleImageUploaded = (imageUrl: string) => {
+    console.log("Image uploaded in AdminPoster:", imageUrl);
     setUploadedImage(imageUrl);
   };
 
@@ -72,7 +76,7 @@ const AdminPoster = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => navigate('/')} 
+              onClick={() => navigate('/admin/dashboard')} 
               className="mr-2"
             >
               <ArrowLeft size={18} />
@@ -89,7 +93,7 @@ const AdminPoster = () => {
           </div>
 
           <PosterForm 
-            previewImages={uploadedImage ? [...previewImages, uploadedImage] : previewImages} 
+            previewImages={previewImages} 
             initialImageUrl={uploadedImage || ""}
           />
         </div>

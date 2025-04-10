@@ -71,6 +71,12 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       if (!imageUrl || imageUrl.includes(":\\") || (imageUrl.includes("/") && !imageUrl.startsWith("http") && !imageUrl.startsWith("/lovable-uploads") && !imageUrl.startsWith("/"))) {
         console.log("Invalid image path detected, using placeholder");
         imageUrl = "/placeholder.svg";
+      } else {
+        // Ensure the image starts with the proper path
+        if (!imageUrl.startsWith('/lovable-uploads/') && !imageUrl.startsWith('http')) {
+          imageUrl = `/lovable-uploads/${imageUrl.split('/').pop()}`;
+          console.log("Fixed image path:", imageUrl);
+        }
       }
       
       // Create new poster object
