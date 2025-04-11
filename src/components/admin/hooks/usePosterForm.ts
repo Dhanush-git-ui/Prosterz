@@ -144,25 +144,33 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       if (supabase) {
         try {
           // Try to insert/update in Supabase
-          const { error } = editMode && posterId 
-            ? await supabase.from('posters').update({
-                title: data.title,
-                category: data.category,
-                subcategory: data.subcategory,
-                image_url: imageUrl,
-                price_a4: formattedPriceA4,
-                price_a3: formattedPriceA3,
-                cart_available: true
-              }).eq('id', posterId)
-            : await supabase.from('posters').insert({
-                title: data.title,
-                category: data.category,
-                subcategory: data.subcategory || null,
-                image_url: imageUrl,
-                price_a4: formattedPriceA4,
-                price_a3: formattedPriceA3,
-                cart_available: true
-              });
+          let error;
+          
+          if (editMode && posterId) {
+            const updateResult = await supabase.from('posters').update({
+              title: data.title,
+              category: data.category,
+              subcategory: data.subcategory || null,
+              image_url: imageUrl,
+              price_a4: formattedPriceA4,
+              price_a3: formattedPriceA3,
+              cart_available: true
+            }).eq('id', posterId);
+            
+            error = updateResult.error;
+          } else {
+            const insertResult = await supabase.from('posters').insert({
+              title: data.title,
+              category: data.category,
+              subcategory: data.subcategory || null,
+              image_url: imageUrl,
+              price_a4: formattedPriceA4,
+              price_a3: formattedPriceA3,
+              cart_available: true
+            });
+            
+            error = insertResult.error;
+          }
           
           if (!error) {
             supabaseStored = true;
