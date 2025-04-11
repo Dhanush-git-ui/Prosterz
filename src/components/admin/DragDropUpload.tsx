@@ -84,21 +84,13 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       
-      // Check if Supabase is connected
-      if (supabase) {
+      // Check if Supabase is connected and the storage bucket exists
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const postersBucketExists = buckets?.some(bucket => bucket.name === 'posters');
+      
+      if (supabase && postersBucketExists) {
         // Try to upload to Supabase storage
         try {
-          // Check if the posters bucket exists, create if not
-          const { data: buckets } = await supabase.storage.listBuckets();
-          const postersBucket = buckets?.find(bucket => bucket.name === 'posters');
-          
-          if (!postersBucket) {
-            // If storage is not set up, fall back to local URL
-            console.log("Supabase storage not configured, using local URL");
-            useLocalUrl();
-            return;
-          }
-          
           // Upload the file to Supabase storage
           const { data, error } = await supabase.storage
             .from('posters')
@@ -131,7 +123,7 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
           useLocalUrl();
         }
       } else {
-        // If Supabase is not connected, use local URL
+        // If Supabase is not connected or bucket doesn't exist, use local URL
         useLocalUrl();
       }
     } catch (error) {
