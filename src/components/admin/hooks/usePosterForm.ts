@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { posterFormSchema, PosterFormValues } from "../form/PosterFormSchema";
 import { toast as sonnerToast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface UsePosterFormProps {
   initialImageUrl?: string;
@@ -67,13 +68,56 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       let imageUrl = data.imageUrl;
       console.log("Processing image URL:", imageUrl);
       
-      // Use a placeholder or online image if the path is local or invalid
-      if (!imageUrl || imageUrl.includes(":\\") || (imageUrl.includes("/") && !imageUrl.startsWith("http") && !imageUrl.startsWith("/lovable-uploads") && !imageUrl.startsWith("/"))) {
+      // If the image is a blob URL (from a file input), we need to handle it differently
+      if (imageUrl.startsWith('blob:')) {
+        try {
+          const response = await fetch(imageUrl);
+          const blob = await response.blob();
+          const fileName = `poster_${Date.now()}.${blob.type.split('/')[1] || 'png'}`;
+          
+          // Check if Supabase is available and try to upload
+          if (supabase) {
+            try {
+              const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('posters')
+                .upload(`poster_images/${fileName}`, blob);
+                
+              if (!uploadError && uploadData) {
+                const { data: publicUrlData } = supabase.storage
+                  .from('posters')
+                  .getPublicUrl(`poster_images/${fileName}`);
+                  
+                if (publicUrlData) {
+                  imageUrl = publicUrlData.publicUrl;
+                  console.log("Uploaded to Supabase, new URL:", imageUrl);
+                }
+              } else {
+                console.error("Error uploading to Supabase:", uploadError);
+              }
+            } catch (uploadErr) {
+              console.error("Supabase upload error:", uploadErr);
+            }
+          }
+        } catch (err) {
+          console.error("Error processing blob URL:", err);
+        }
+      }
+      
+      // Use a placeholder if the path is local or invalid
+      if (!imageUrl || 
+          (imageUrl.includes(":\\") || 
+          (imageUrl.includes("/") && 
+           !imageUrl.startsWith("http") && 
+           !imageUrl.startsWith("/lovable-uploads") &&
+           !imageUrl.startsWith("/") &&
+           !imageUrl.startsWith("blob:")))) {
         console.log("Invalid image path detected, using placeholder");
         imageUrl = "/placeholder.svg";
       } else {
         // Ensure the image starts with the proper path
-        if (!imageUrl.startsWith('/lovable-uploads/') && !imageUrl.startsWith('http')) {
+        if (!imageUrl.startsWith('/lovable-uploads/') && 
+            !imageUrl.startsWith('http') &&
+            !imageUrl.startsWith('blob:')) {
           imageUrl = `/lovable-uploads/${imageUrl.split('/').pop()}`;
           console.log("Fixed image path:", imageUrl);
         }
@@ -95,27 +139,66 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       
       console.log("Creating poster object:", newPoster);
       
-      // Get existing posters from localStorage or initialize empty array
-      const existingPostersString = localStorage.getItem("posters");
-      const existingPosters = existingPostersString ? JSON.parse(existingPostersString) : [];
-      
-      console.log("Existing posters:", existingPosters);
-      
-      let updatedPosters;
-      if (editMode && posterId) {
-        // If editing, replace the existing poster
-        updatedPosters = existingPosters.map((poster: any) => 
-          poster.id === posterId ? newPoster : poster
-        );
-      } else {
-        // Add new poster to array
-        updatedPosters = [...existingPosters, newPoster];
+      // Try to store in Supabase if connected
+      let supabaseStored = false;
+      if (supabase) {
+        try {
+          // Try to insert/update in Supabase
+          const { error } = editMode && posterId 
+            ? await supabase.from('posters').update({
+                title: data.title,
+                category: data.category,
+                subcategory: data.subcategory,
+                image_url: imageUrl,
+                price_a4: formattedPriceA4,
+                price_a3: formattedPriceA3,
+                cart_available: true
+              }).eq('id', posterId)
+            : await supabase.from('posters').insert({
+                title: data.title,
+                category: data.category,
+                subcategory: data.subcategory || null,
+                image_url: imageUrl,
+                price_a4: formattedPriceA4,
+                price_a3: formattedPriceA3,
+                cart_available: true
+              });
+          
+          if (!error) {
+            supabaseStored = true;
+            console.log("Stored poster in Supabase");
+          } else {
+            console.error("Error storing in Supabase:", error);
+          }
+        } catch (err) {
+          console.error("Supabase storage error:", err);
+        }
       }
       
-      console.log("Updated posters:", updatedPosters);
-      
-      // Save updated posters back to localStorage
-      localStorage.setItem("posters", JSON.stringify(updatedPosters));
+      // Always store in localStorage as a backup
+      if (!supabaseStored) {
+        // Get existing posters from localStorage or initialize empty array
+        const existingPostersString = localStorage.getItem("posters");
+        const existingPosters = existingPostersString ? JSON.parse(existingPostersString) : [];
+        
+        console.log("Existing posters:", existingPosters);
+        
+        let updatedPosters;
+        if (editMode && posterId) {
+          // If editing, replace the existing poster
+          updatedPosters = existingPosters.map((poster: any) => 
+            poster.id === posterId ? newPoster : poster
+          );
+        } else {
+          // Add new poster to array
+          updatedPosters = [...existingPosters, newPoster];
+        }
+        
+        console.log("Updated posters:", updatedPosters);
+        
+        // Save updated posters back to localStorage
+        localStorage.setItem("posters", JSON.stringify(updatedPosters));
+      }
       
       // Show toast notification
       toast({

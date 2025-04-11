@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Upload, Image, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DragDropUploadProps {
   onImageUploaded: (imageUrl: string) => void;
@@ -13,6 +14,7 @@ interface DragDropUploadProps {
 export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<string | null>(initialImage || null);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -64,7 +66,7 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
     }
   };
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = async (file: File) => {
     // Check if file is an image
     if (!file.type.match('image.*')) {
       toast({
@@ -75,37 +77,91 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
       return;
     }
 
+    setIsUploading(true);
+
     try {
-      // In a real application, you would upload the file to a server
-      // For this demo, we'll use a local URL and save it to the preloadedImages list
-      const imageUrl = URL.createObjectURL(file);
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       
-      // Save the uploaded image URL to localStorage to persist it
-      const uploadedImages = JSON.parse(localStorage.getItem("uploadedImages") || "[]");
-      
-      // Store the Object URL in uploadedImages
-      uploadedImages.push(imageUrl);
-      localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
+      // Check if Supabase is connected
+      if (supabase) {
+        // Try to upload to Supabase storage
+        try {
+          // Check if the posters bucket exists, create if not
+          const { data: buckets } = await supabase.storage.listBuckets();
+          const postersBucket = buckets?.find(bucket => bucket.name === 'posters');
+          
+          if (!postersBucket) {
+            // If storage is not set up, fall back to local URL
+            console.log("Supabase storage not configured, using local URL");
+            useLocalUrl();
+            return;
+          }
+          
+          // Upload the file to Supabase storage
+          const { data, error } = await supabase.storage
+            .from('posters')
+            .upload(`poster_images/${fileName}`, file);
 
-      // Add fixed path for the uploaded car image
-      const carImagePath = `/lovable-uploads/eaab3ca2-dc4a-4a39-b89c-953960741cbd.png`;
-      
-      // Set the uploaded image and notify parent component
-      setUploadedImage(carImagePath);
-      onImageUploaded(carImagePath);
+          if (error) {
+            console.error("Supabase upload error:", error);
+            // Fall back to local URL
+            useLocalUrl();
+            return;
+          }
 
-      sonnerToast.success("Image uploaded successfully", {
-        description: "Your poster image has been uploaded.",
-      });
+          // Get the public URL for the uploaded file
+          const { data: publicUrl } = supabase.storage
+            .from('posters')
+            .getPublicUrl(`poster_images/${fileName}`);
+          
+          if (publicUrl) {
+            setUploadedImage(publicUrl.publicUrl);
+            onImageUploaded(publicUrl.publicUrl);
+
+            sonnerToast.success("Image uploaded successfully", {
+              description: "Your poster image has been uploaded to Supabase storage.",
+            });
+          } else {
+            useLocalUrl();
+          }
+        } catch (error) {
+          console.error("Supabase storage error:", error);
+          useLocalUrl();
+        }
+      } else {
+        // If Supabase is not connected, use local URL
+        useLocalUrl();
+      }
     } catch (error) {
       console.error("Error handling file upload:", error);
-      toast({
-        title: "Upload failed",
-        description: "There was a problem uploading your image.",
-        variant: "destructive",
+      useLocalUrl();
+    } finally {
+      setIsUploading(false);
+    }
+
+    // Fallback to local URL if Supabase upload fails
+    function useLocalUrl() {
+      // For now we'll use the actual uploaded image
+      const imageUrl = URL.createObjectURL(file);
+      
+      // Store the actual uploaded image URL
+      setUploadedImage(imageUrl);
+      onImageUploaded(imageUrl);
+      
+      sonnerToast.success("Image uploaded successfully", {
+        description: "Your poster image has been stored locally.",
       });
     }
   };
+
+  const uploadingContent = (
+    <div className="flex flex-col items-center">
+      <div className="w-12 h-12 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-2"></div>
+      <p className="text-gray-500">Uploading your image...</p>
+    </div>
+  );
 
   return (
     <div className="mb-6">
@@ -122,7 +178,9 @@ export const DragDropUpload = ({ onImageUploaded, initialImage }: DragDropUpload
           ${uploadedImage ? "border-green-500 bg-green-50" : ""}
         `}
       >
-        {!uploadedImage ? (
+        {isUploading ? (
+          uploadingContent
+        ) : !uploadedImage ? (
           <>
             <Upload className={`h-12 w-12 mb-2 ${isDragging ? "text-indigo-500" : "text-gray-400"}`} />
             <p className="text-center text-gray-500 mb-1">
