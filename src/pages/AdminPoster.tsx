@@ -7,6 +7,7 @@ import { PosterForm } from "@/components/admin/PosterForm";
 import { DragDropUpload } from "@/components/admin/DragDropUpload";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { SupabaseStatus } from "@/components/admin/SupabaseStatus";
 
 const AdminPoster = () => {
   const { isAdmin } = useAdminAuth();
@@ -52,6 +53,8 @@ const AdminPoster = () => {
     "/lovable-uploads/9cb189f7-7e11-4d4a-94e0-e65245470f31.png",
     "/lovable-uploads/b7d713b4-098a-4ccc-9ea1-c92ec06e083f.png",
     "/lovable-uploads/86398209-c105-471f-a2c0-04a6e33603e2.png",
+    // New uploaded image
+    "public/lovable-uploads/356a9171-99ab-4ea5-82f4-05a6139db963.png",
   ];
 
   const handleImageUploaded = (imageUrl: string) => {
@@ -87,13 +90,17 @@ const AdminPoster = () => {
             </div>
           </div>
           
+          {/* Display Supabase connection status */}
+          <SupabaseStatus />
+          
           <div className="mb-6">
             <p className="text-gray-600 mb-4">Upload your poster image by dragging and dropping or clicking the area below.</p>
             <DragDropUpload onImageUploaded={handleImageUploaded} />
           </div>
 
           <PosterForm 
-            previewImages={previewImages} 
+            previewImages={uploadedImage && !previewImages.includes(uploadedImage) ? 
+              [...previewImages, uploadedImage] : previewImages} 
             initialImageUrl={uploadedImage || ""}
           />
         </div>
