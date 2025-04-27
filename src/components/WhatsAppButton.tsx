@@ -5,7 +5,7 @@ import { useCart } from '@/context/CartContext';
 
 export const WhatsAppButton = () => {
   const { items, totalAmount } = useCart();
-  const phoneNumber = '7995902773';
+  const phoneNumber = '9502869924';
   
   const handleWhatsAppClick = () => {
     let message = 'Hello, I would like to inquire about your posters.';
