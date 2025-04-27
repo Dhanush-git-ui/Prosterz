@@ -59,7 +59,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
-    const phoneNumber = "7995902773";
+    const phoneNumber = "9502869924";
     let message = "Hello, I'd like to order the following posters:\n\n";
     
     items.forEach((item, index) => {
