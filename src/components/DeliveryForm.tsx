@@ -4,7 +4,7 @@ import { Phone, Mail } from "lucide-react";
 
 export const DeliveryForm = () => {
   const openWhatsApp = () => {
-    window.open(`https://wa.me/917995902773`, '_blank');
+    window.open(`https://wa.me/919502869924`, '_blank');
   };
 
   const openEmail = () => {
@@ -96,7 +96,7 @@ export const DeliveryForm = () => {
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">WhatsApp</h4>
-                <p className="text-gray-600">+91 7995902773</p>
+                <p className="text-gray-600">+91 9502869924</p>
               </div>
               <motion.div 
                 className="ml-auto"
