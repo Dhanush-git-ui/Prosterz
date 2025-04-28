@@ -20,7 +20,15 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    addToCart(poster, selectedSize);
+    addToCart({
+      poster: {
+        id: poster.id.toString(),
+        title: poster.title,
+        image: poster.image
+      },
+      size: selectedSize,
+      price: poster.sizes[selectedSize]
+    });
     onClose();
   };
 

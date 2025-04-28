@@ -6,19 +6,19 @@ export const Header = () => {
     <motion.header 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="pt-32 pb-20 bg-gradient-to-br from-indigo-50 to-pink-50 relative"
+      className="pt-24 sm:pt-32 pb-16 sm:pb-20 bg-gradient-to-br from-indigo-50 to-pink-50 relative"
     >
-      <div className="container mx-auto px-6 text-left md:text-center">
+      <div className="container mx-auto px-4 sm:px-6 text-left md:text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-800">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 text-gray-800">
             Premium Quality <span className="bg-gradient-to-r from-indigo-600 to-pink-500 text-transparent bg-clip-text">Poster Collection</span>
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl mb-8">
+          <p className="text-gray-600 text-base sm:text-lg md:text-xl mb-6 sm:mb-8">
             Discover our curated collection of premium posters featuring iconic albums and legendary sneakers.
           </p>
           <motion.a 
