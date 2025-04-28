@@ -71,14 +71,14 @@ export const usePosterData = () => {
   };
 
   // Function to delete a poster by ID
-  const deletePoster = (posterId: number) => {
+  const deletePoster = async (posterId: number) => {
     try {
       const updatedPosters = posters.filter(poster => poster.id !== posterId);
-      updatePosters(updatedPosters);
+      await updatePosters(updatedPosters);
       toast.success("Poster deleted successfully");
       return true;
     } catch (error) {
-      console.error("Error deleting poster:", error);
+      console.error('Error deleting poster:', error);
       toast.error("Failed to delete poster");
       return false;
     }
@@ -108,10 +108,10 @@ export const usePosterData = () => {
     )
   );
 
-  return { 
-    posters, 
-    isAdmin, 
-    isLoading, 
+  return {
+    posters,
+    isAdmin,
+    isLoading,
     categories,
     movieSubcategories,
     setPosters: updatePosters,

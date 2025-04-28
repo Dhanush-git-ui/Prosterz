@@ -3,6 +3,9 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
 import { PosterModal } from "./PosterModal";
+import { usePosterData } from "@/hooks/usePosterData";
+import { Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PosterCardProps {
   poster: Poster;
@@ -15,6 +18,8 @@ export const PosterCard = ({
   openPopoverId,
   setOpenPopoverId 
 }: PosterCardProps) => {
+  const { isAdmin, deletePoster } = usePosterData();
+  const { toast } = useToast();
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,9 +65,14 @@ export const PosterCard = ({
           setIsHovered(false);
           resetMousePosition();
         }}
+        onClick={() => {
+          if (window.innerWidth < 768) {
+            openModal();
+          }
+        }}
         onMouseMove={handleMouseMove}
         onMouseLeave={resetMousePosition}
-        className="group relative flex flex-col"
+        className="group relative flex flex-col cursor-pointer"
         ref={cardRef}
         style={{ perspective: "1000px" }}
       >
@@ -107,7 +117,7 @@ export const PosterCard = ({
           )}
           
           <motion.div 
-            className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center gap-4 opacity-0 md:group-hover:opacity-100 transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: isHovered ? 1 : 0
@@ -115,13 +125,34 @@ export const PosterCard = ({
             transition={{ duration: 0.3 }}
           >
             <motion.button 
-              className="px-6 py-2 bg-white text-gray-900 font-medium rounded-full transform transition-transform duration-300"
+              className="px-6 py-3 md:py-2 bg-white text-gray-900 font-medium rounded-full transform transition-transform duration-300 shadow-lg touch-manipulation"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={openModal}
             >
               Quick View
             </motion.button>
+            {isAdmin && (
+              <motion.button
+                className="p-2 bg-red-500 text-white rounded-full transform transition-transform duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={async () => {
+                  if (window.confirm('Are you sure you want to delete this poster?')) {
+                    const success = await deletePoster(poster.id);
+                    if (success) {
+                      toast({
+                        title: "Poster deleted",
+                        description: "The poster has been successfully removed.",
+                        variant: "success"
+                      });
+                    }
+                  }
+                }}
+              >
+                <Trash2 size={20} />
+              </motion.button>
+            )}
           </motion.div>
         </motion.div>
         

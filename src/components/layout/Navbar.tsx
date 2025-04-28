@@ -114,7 +114,7 @@ export const Navbar = () => {
         </div>
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-4 sm:gap-6">
           <a href="#posters" className="text-gray-700 hover:text-gray-900 font-medium">Posters</a>
           <a href="#delivery" className="text-gray-700 hover:text-gray-900 font-medium">Contact</a>
           <Link to="/sign-in" className="text-gray-700 hover:text-gray-900 font-medium">Sign In</Link>

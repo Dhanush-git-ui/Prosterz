@@ -74,12 +74,5 @@ export const sneakerPosters: Poster[] = [
     sizes: { A4: "$99", A3: "$109" },
     cartAvailable: true
   },
-  {
-    id: 40,
-    image: "/lovable-uploads/71e15e3a-a97d-4161-b916-aa831deaa53a.png",
-    title: "Nike Air Special Edition",
-    category: "sneakers",
-    sizes: { A4: "$99", A3: "$109" },
-    cartAvailable: true
-  }
+  
 ];
