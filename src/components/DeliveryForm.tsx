@@ -4,7 +4,11 @@ import { Phone, Mail } from "lucide-react";
 
 export const DeliveryForm = () => {
   const openWhatsApp = () => {
+<<<<<<< HEAD
     window.open(`https://wa.me/919502869924`, '_blank');
+=======
+    window.open(`https://wa.me/+91 9502869924`, '_blank');
+>>>>>>> origin/main
   };
 
   const openEmail = () => {
