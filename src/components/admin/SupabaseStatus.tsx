@@ -10,30 +10,33 @@ export const SupabaseStatus = () => {
   useEffect(() => {
     const checkSupabaseConnection = async () => {
       try {
-        // Use a generic query that doesn't depend on specific tables
-        // This avoids TypeScript errors when querying tables not defined in types
-        const { error: queryError } = await supabase
-          .from('posters' as any) // Cast to any to bypass type checking
-          .select('count')
-          .limit(1)
-          .single();
+        // Use a direct RPC call that doesn't depend on database schema
+        const { error } = await supabase.rpc('get_service_status', {}, { 
+          count: 'exact' 
+        }).throwOnError();
         
-        // If specific expected errors occur, we still consider it connected
-        if (!queryError || 
-            queryError.code === 'PGRST116' || 
-            queryError.message.includes('permission denied') || 
-            queryError.message.includes('does not exist') || 
-            queryError.message.includes('relation') ||
-            queryError.code === '42P01') {
+        // If the function doesn't exist, we'll get an error, but it still means
+        // we successfully connected to Supabase
+        if (!error || error.message.includes('function') || error.message.includes('does not exist')) {
           setStatus('connected');
         } else {
           setStatus('error');
-          setErrorMessage(queryError.message);
+          setErrorMessage(error.message);
         }
       } catch (err: any) {
         console.error("Supabase connection error:", err);
-        setStatus('error');
-        setErrorMessage(err?.message || 'Unknown error');
+        
+        // Even if we get a 404 or function not found error, it means we connected to Supabase
+        if (err.message && (
+            err.message.includes('function') || 
+            err.message.includes('does not exist') || 
+            err.status === 404 || 
+            err.code === '42883')) {
+          setStatus('connected');
+        } else {
+          setStatus('error');
+          setErrorMessage(err?.message || 'Unknown error');
+        }
       }
     };
 
