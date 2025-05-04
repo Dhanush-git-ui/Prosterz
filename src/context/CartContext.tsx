@@ -14,8 +14,10 @@ interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
+  cartItems: CartItem[]; // Adding this alias for backward compatibility
   addToCart: (item: CartItem) => void;
   removeFromCart: (index: number) => void;
+  clearCart: () => void; // Adding missing clearCart method
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   totalAmount: number;
@@ -41,6 +43,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const removeFromCart = (index: number) => {
     setItems(prevItems => prevItems.filter((_, i) => i !== index));
+  };
+
+  const clearCart = () => {
+    setItems([]);
   };
 
   const totalAmount = items.reduce((sum, item) => sum + parseFloat(item.price.replace('$', '')), 0);
@@ -74,8 +80,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   return (
     <CartContext.Provider value={{ 
       items, 
+      cartItems: items, // Adding this alias for backward compatibility
       addToCart, 
       removeFromCart, 
+      clearCart, 
       cartOpen, 
       setCartOpen, 
       totalAmount, 

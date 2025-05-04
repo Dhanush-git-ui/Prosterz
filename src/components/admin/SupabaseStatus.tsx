@@ -10,19 +10,15 @@ export const SupabaseStatus = () => {
   useEffect(() => {
     const checkSupabaseConnection = async () => {
       try {
-        // Try to connect to Supabase
-        const { data, error } = await supabase.from('test_connection').select('*').limit(1).maybeSingle();
+        // Try to connect to Supabase by making a simple request
+        const { error: rpcError } = await supabase.rpc('version');
         
-        if (error) {
-          // If we get a permissions error, that means Supabase is connected but the table doesn't exist
-          if (error.code === 'PGRST116' || error.message.includes('permission denied')) {
-            setStatus('connected');
-          } else {
-            setStatus('error');
-            setErrorMessage(error.message);
-          }
-        } else {
+        // If the RPC call succeeds or fails with specific errors, we know Supabase is connected
+        if (!rpcError || rpcError.code === 'PGRST116' || rpcError.message.includes('permission denied') || rpcError.message.includes('function not found')) {
           setStatus('connected');
+        } else {
+          setStatus('error');
+          setErrorMessage(rpcError.message);
         }
       } catch (err: any) {
         console.error("Supabase connection error:", err);

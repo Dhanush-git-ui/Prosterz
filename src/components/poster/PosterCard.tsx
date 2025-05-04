@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
@@ -144,7 +143,6 @@ export const PosterCard = ({
                       toast({
                         title: "Poster deleted",
                         description: "The poster has been successfully removed.",
-                        variant: "success"
                       });
                     }
                   }
