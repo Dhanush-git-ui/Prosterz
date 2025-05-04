@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PosterModalProps {
   poster: Poster;
@@ -18,6 +19,7 @@ interface PosterModalProps {
 export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
   const [selectedSize, setSelectedSize] = useState<"A4" | "A3">("A4");
   const { addToCart } = useCart();
+  const isMobile = useIsMobile();
 
   const handleAddToCart = () => {
     addToCart({
@@ -36,7 +38,10 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <AnimatePresence>
         {isOpen && (
-          <DialogContent className="w-full max-w-6xl p-0 bg-transparent border-none shadow-none h-[90vh]" onPointerDownOutside={onClose}>
+          <DialogContent 
+            className="w-full max-w-6xl p-0 bg-transparent border-none shadow-none h-[90vh] sm:h-[90vh]" 
+            onPointerDownOutside={onClose}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -44,7 +49,7 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
               transition={{ duration: 0.3 }}
               className="relative w-full h-full flex flex-col md:flex-row bg-white rounded-lg overflow-hidden"
             >
-              <div className="relative w-full md:w-3/4 bg-gray-100 h-full">
+              <div className="relative w-full md:w-3/4 bg-gray-100 h-[50vh] md:h-full">
                 <motion.img 
                   src={poster.image} 
                   alt={poster.title} 
@@ -61,13 +66,13 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
                 </button>
               </div>
 
-              <div className="w-full md:w-1/4 p-6 flex flex-col justify-between">
+              <div className="w-full md:w-1/4 p-4 md:p-6 flex flex-col justify-between overflow-y-auto">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold text-gray-900">{poster.title}</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{poster.title}</h2>
                   <p className="text-gray-600">Category: {poster.category}</p>
                   
-                  <div className="space-y-3 mt-6">
-                    <h3 className="text-lg font-medium">Select Size:</h3>
+                  <div className="space-y-3 mt-4 md:mt-6">
+                    <h3 className="text-md md:text-lg font-medium">Select Size:</h3>
                     <RadioGroup 
                       value={selectedSize} 
                       onValueChange={(value) => setSelectedSize(value as "A4" | "A3")}
@@ -97,12 +102,12 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
                   </div>
                 </div>
                 
-                <div className="mt-8">
+                <div className="mt-6">
                   <Button
                     onClick={handleAddToCart}
-                    className="w-full px-6 py-6 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full flex items-center justify-center gap-2"
+                    className={`w-full py-5 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-medium rounded-full flex items-center justify-center gap-2 ${isMobile ? 'text-sm px-4' : 'px-6'}`}
                   >
-                    <ShoppingCart size={18} />
+                    <ShoppingCart size={isMobile ? 16 : 18} />
                     Add to Cart
                   </Button>
                 </div>
