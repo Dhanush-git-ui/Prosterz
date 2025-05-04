@@ -78,21 +78,33 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
           // Check if Supabase is available and try to upload
           if (supabase) {
             try {
-              const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('posters')
-                .upload(`poster_images/${fileName}`, blob);
-                
-              if (!uploadError && uploadData) {
-                const { data: publicUrlData } = supabase.storage
+              // Check if storage bucket exists first
+              const { data: bucketData } = await supabase.storage.getBuckets();
+              let bucketExists = false;
+              
+              if (bucketData) {
+                bucketExists = bucketData.some(bucket => bucket.name === 'posters');
+              }
+              
+              if (bucketExists) {
+                const { data: uploadData, error: uploadError } = await supabase.storage
                   .from('posters')
-                  .getPublicUrl(`poster_images/${fileName}`);
+                  .upload(`poster_images/${fileName}`, blob);
                   
-                if (publicUrlData) {
-                  imageUrl = publicUrlData.publicUrl;
-                  console.log("Uploaded to Supabase, new URL:", imageUrl);
+                if (!uploadError && uploadData) {
+                  const { data: publicUrlData } = supabase.storage
+                    .from('posters')
+                    .getPublicUrl(`poster_images/${fileName}`);
+                    
+                  if (publicUrlData) {
+                    imageUrl = publicUrlData.publicUrl;
+                    console.log("Uploaded to Supabase, new URL:", imageUrl);
+                  }
+                } else {
+                  console.error("Error uploading to Supabase:", uploadError);
                 }
               } else {
-                console.error("Error uploading to Supabase:", uploadError);
+                console.log("Storage bucket 'posters' doesn't exist, using blob URL");
               }
             } catch (uploadErr) {
               console.error("Supabase upload error:", uploadErr);
@@ -139,74 +151,28 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       
       console.log("Creating poster object:", newPoster);
       
-      // Try to store in Supabase if connected
-      let supabaseStored = false;
-      if (supabase) {
-        try {
-          // Try to insert/update in Supabase
-          let error;
-          
-          if (editMode && posterId) {
-            const updateResult = await supabase.from('posters').update({
-              title: data.title,
-              category: data.category,
-              subcategory: data.subcategory || null,
-              image_url: imageUrl,
-              price_a4: formattedPriceA4,
-              price_a3: formattedPriceA3,
-              cart_available: true
-            }).eq('id', posterId);
-            
-            error = updateResult.error;
-          } else {
-            const insertResult = await supabase.from('posters').insert({
-              title: data.title,
-              category: data.category,
-              subcategory: data.subcategory || null,
-              image_url: imageUrl,
-              price_a4: formattedPriceA4,
-              price_a3: formattedPriceA3,
-              cart_available: true
-            });
-            
-            error = insertResult.error;
-          }
-          
-          if (!error) {
-            supabaseStored = true;
-            console.log("Stored poster in Supabase");
-          } else {
-            console.error("Error storing in Supabase:", error);
-          }
-        } catch (err) {
-          console.error("Supabase storage error:", err);
-        }
+      // Try to store in local storage
+      // Get existing posters from localStorage or initialize empty array
+      const existingPostersString = localStorage.getItem("posters");
+      const existingPosters = existingPostersString ? JSON.parse(existingPostersString) : [];
+      
+      console.log("Existing posters:", existingPosters);
+      
+      let updatedPosters;
+      if (editMode && posterId) {
+        // If editing, replace the existing poster
+        updatedPosters = existingPosters.map((poster: any) => 
+          poster.id === posterId ? newPoster : poster
+        );
+      } else {
+        // Add new poster to array
+        updatedPosters = [...existingPosters, newPoster];
       }
       
-      // Always store in localStorage as a backup
-      if (!supabaseStored) {
-        // Get existing posters from localStorage or initialize empty array
-        const existingPostersString = localStorage.getItem("posters");
-        const existingPosters = existingPostersString ? JSON.parse(existingPostersString) : [];
-        
-        console.log("Existing posters:", existingPosters);
-        
-        let updatedPosters;
-        if (editMode && posterId) {
-          // If editing, replace the existing poster
-          updatedPosters = existingPosters.map((poster: any) => 
-            poster.id === posterId ? newPoster : poster
-          );
-        } else {
-          // Add new poster to array
-          updatedPosters = [...existingPosters, newPoster];
-        }
-        
-        console.log("Updated posters:", updatedPosters);
-        
-        // Save updated posters back to localStorage
-        localStorage.setItem("posters", JSON.stringify(updatedPosters));
-      }
+      console.log("Updated posters:", updatedPosters);
+      
+      // Save updated posters back to localStorage
+      localStorage.setItem("posters", JSON.stringify(updatedPosters));
       
       // Show toast notification
       toast({
