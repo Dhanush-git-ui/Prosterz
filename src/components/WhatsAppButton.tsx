@@ -5,8 +5,8 @@ import { useCart } from '@/context/CartContext';
 
 export const WhatsAppButton = () => {
   const { items, totalAmount } = useCart();
-  // Resolving merge conflict - using standard format without spaces
-  const phoneNumber = '919502869924';
+  // Using the standardized format
+  const phoneNumber = '+91 9502869924';
   
   const handleWhatsAppClick = () => {
     let message = 'Hello, I would like to inquire about your posters.';
@@ -24,7 +24,9 @@ export const WhatsAppButton = () => {
     }
     
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    // Remove spaces from phone number for the URL
+    const formattedNumber = phoneNumber.replace(/\s+/g, '');
+    const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
 

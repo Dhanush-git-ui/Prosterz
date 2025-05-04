@@ -11,14 +11,24 @@ export const SupabaseStatus = () => {
     const checkSupabaseConnection = async () => {
       try {
         // Try to connect to Supabase by making a simple request
-        const { error: rpcError } = await supabase.rpc('version');
+        // Use a simple select query instead of rpc
+        const { error: queryError } = await supabase
+          .from('posters')
+          .select('count')
+          .limit(1)
+          .single();
         
-        // If the RPC call succeeds or fails with specific errors, we know Supabase is connected
-        if (!rpcError || rpcError.code === 'PGRST116' || rpcError.message.includes('permission denied') || rpcError.message.includes('function not found')) {
+        // If specific expected errors occur, we still consider it connected
+        if (!queryError || 
+            queryError.code === 'PGRST116' || 
+            queryError.message.includes('permission denied') || 
+            queryError.message.includes('does not exist') || 
+            queryError.message.includes('relation') ||
+            queryError.code === '42P01') {
           setStatus('connected');
         } else {
           setStatus('error');
-          setErrorMessage(rpcError.message);
+          setErrorMessage(queryError.message);
         }
       } catch (err: any) {
         console.error("Supabase connection error:", err);

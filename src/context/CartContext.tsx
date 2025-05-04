@@ -61,7 +61,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
-    const phoneNumber = "919502869924";
+    const phoneNumber = "+91 9502869924";
     let message = "Hello, I'd like to order the following posters:\n\n";
     
     items.forEach((item, index) => {
@@ -72,7 +72,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}`;
     
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\s+/g, '')}?text=${encodedMessage}`;
     
     window.open(whatsappUrl, '_blank');
   };

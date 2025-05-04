@@ -79,12 +79,8 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
           if (supabase) {
             try {
               // Check if storage bucket exists first
-              const { data: bucketData } = await supabase.storage.getBuckets();
-              let bucketExists = false;
-              
-              if (bucketData) {
-                bucketExists = bucketData.some(bucket => bucket.name === 'posters');
-              }
+              const { data: bucketData, error: bucketError } = await supabase.storage.getBucket('posters');
+              let bucketExists = !!bucketData;
               
               if (bucketExists) {
                 const { data: uploadData, error: uploadError } = await supabase.storage
