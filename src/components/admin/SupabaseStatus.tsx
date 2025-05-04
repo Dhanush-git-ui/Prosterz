@@ -10,18 +10,18 @@ export const SupabaseStatus = () => {
   useEffect(() => {
     const checkSupabaseConnection = async () => {
       try {
-        // Use a direct RPC call that doesn't depend on database schema
-        const { error } = await supabase.rpc('get_service_status', {}, { 
+        // Cast to any to bypass TypeScript's type checking since the function isn't defined in types
+        const { error } = await (supabase.rpc as any)('get_service_status', {}, { 
           count: 'exact' 
         }).throwOnError();
         
         // If the function doesn't exist, we'll get an error, but it still means
         // we successfully connected to Supabase
-        if (!error || error.message.includes('function') || error.message.includes('does not exist')) {
+        if (!error || (error as any)?.message?.includes('function') || (error as any)?.message?.includes('does not exist')) {
           setStatus('connected');
         } else {
           setStatus('error');
-          setErrorMessage(error.message);
+          setErrorMessage((error as any)?.message || 'Unknown error');
         }
       } catch (err: any) {
         console.error("Supabase connection error:", err);
