@@ -25,7 +25,7 @@ export const CartButton: React.FC = () => {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px]">
+      <SheetContent className="w-full sm:w-[400px] md:w-[540px]">
         <Cart />
       </SheetContent>
     </Sheet>
