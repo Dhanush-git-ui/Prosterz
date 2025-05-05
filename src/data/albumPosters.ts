@@ -49,5 +49,70 @@ export const albumPosters: Poster[] = [
     category: "albums",
     sizes: { A4: "$79", A3: "$109" },
     cartAvailable: true
+  },
+  // Adding new album posters
+  {
+    id: 17,
+    image: "/lovable-uploads/ba6d8e7a-d773-47ce-bc0e-0e8e7a7aefac.png",
+    title: "Jo Tum Mere Ho",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 18,
+    image: "/lovable-uploads/d36e98a2-f538-4fc1-ad39-17dc71ad749b.png",
+    title: "I AM MUSIC",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 19,
+    image: "/lovable-uploads/7c7537f7-0248-475f-a30f-1ce4d6db9bef.png",
+    title: "Lover",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 20,
+    image: "/lovable-uploads/c84b8c4e-a14f-4e68-b192-474ada7515bc.png",
+    title: "Born To Die",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 21,
+    image: "/lovable-uploads/86a26b19-79d5-416c-8ed8-daafa528dc92.png",
+    title: "Hurry Up Tomorrow",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 22,
+    image: "/lovable-uploads/8b169cf4-ac15-400d-9aea-446c879cafc5.png",
+    title: "Chemtrails Over The Country Club",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 23,
+    image: "/lovable-uploads/ae843c36-3d31-4c6e-870e-40ebe9004ea0.png",
+    title: "After Hours",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
+  },
+  {
+    id: 24,
+    image: "/lovable-uploads/fa1cc9ea-ecce-4798-9b49-982382250094.png",
+    title: "Starboy Deluxe",
+    category: "albums",
+    sizes: { A4: "₹79", A3: "₹109" },
+    cartAvailable: true
   }
 ];
