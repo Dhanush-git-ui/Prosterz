@@ -1,4 +1,3 @@
-
 import { Navbar } from "../components/layout/Navbar";
 import { Header } from "../components/layout/Header";
 import { PosterGrid } from "../components/PosterGrid";
@@ -6,6 +5,7 @@ import { DeliveryForm } from "../components/DeliveryForm";
 import { FeaturesSection } from "../components/features/FeaturesSection";
 import { Footer } from "../components/layout/Footer";
 import { motion } from "framer-motion";
+import { PosterFinder } from "@/components/PosterFinder";
 
 const Index = () => {
   return (
@@ -25,6 +25,8 @@ const Index = () => {
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Collection</h2>
               <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-pink-400 rounded"></div>
             </motion.div>
+
+            <PosterFinder />
             <PosterGrid />
           </div>
         </section>
