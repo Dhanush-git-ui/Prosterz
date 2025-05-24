@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -161,7 +160,7 @@ export const Navbar = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Your Account</DialogTitle>
+                  <DialogTitle>Account Settings</DialogTitle>
                   <DialogDescription>
                     {isAdmin 
                       ? "You are logged in as an administrator" 
