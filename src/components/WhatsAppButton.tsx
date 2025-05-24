@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { WhatsappIcon } from './icons/WhatsappIcon';
 import { useCart } from '@/context/CartContext';
+import { ShoppingCart } from 'lucide-react';
 
 export const WhatsAppButton = () => {
   const { items, totalAmount } = useCart();
@@ -31,11 +32,16 @@ export const WhatsAppButton = () => {
   return (
     <motion.button
       onClick={handleWhatsAppClick}
-      className="fixed bottom-8 right-8 z-50 p-3 bg-green-500 rounded-full shadow-lg"
+      className="fixed bottom-8 right-8 z-50 p-3 bg-green-500 rounded-full shadow-lg flex items-center justify-center gap-2"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
     >
       <WhatsappIcon className="text-white" size={28} />
+      {items.length > 0 && (
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+          {items.length}
+        </span>
+      )}
     </motion.button>
   );
 };
