@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Search, DollarSign } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { defaultPosters } from '@/data/posters';
 
 export const PosterFinder = () => {
   const [searchTerm, setSearchTerm] = useState('');
