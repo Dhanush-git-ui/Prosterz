@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X } from "lucide-react";
 import { Poster } from "@/data/posters";
-import { DialogContent, DialogOverlay, Dialog } from "@/components/ui/dialog";
+import { DialogContent, DialogOverlay, Dialog, DialogTitle } from "@/components/ui/dialog";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -42,6 +41,7 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
             className="w-full max-w-6xl p-0 bg-transparent border-none shadow-none h-[90vh] sm:h-[90vh]" 
             onPointerDownOutside={onClose}
           >
+            <DialogTitle className="sr-only">Poster Details - {poster.title}</DialogTitle>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
