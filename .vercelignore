@@ -1,0 +1,9 @@
+node_modules
+bun.lockb
+*.log
+.env
+.env.local
+.DS_Store
+/supabase
+/dist
+.git

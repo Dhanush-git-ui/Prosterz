@@ -176,7 +176,46 @@ Contributions are welcome! Here's how you can help:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## � Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. **Push to GitHub**
+```bash
+git push origin main
+```
+
+2. **Connect to Vercel**
+   - Visit [https://vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Select your GitHub repository
+   - Vercel will auto-detect Vite configuration
+
+3. **Set Environment Variables**
+   - In Vercel dashboard, go to Settings → Environment Variables
+   - Add the following variables:
+     ```
+     VITE_SUPABASE_URL=your_supabase_url
+     VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+     ```
+
+4. **Deploy**
+   - Click "Deploy"
+   - Your app will be live at `https://your-project.vercel.app`
+
+### Deploy to Other Platforms
+
+**Netlify:**
+- Connect your GitHub repo
+- Build command: `bun install && bun run build` (or `npm`)
+- Publish directory: `dist`
+
+**AWS Amplify:**
+- Connect GitHub repository
+- Build settings will auto-detect Vite
+- Add environment variables in Amplify console
+
+## �📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
