@@ -37,8 +37,8 @@ export const PosterCard = ({
     
     // Calculate the rotation based on mouse position
     // Higher numbers for more extreme rotation
-    const rotateY = ((x / rect.width) - 0.5) * 20; 
-    const rotateX = ((y / rect.height) - 0.5) * -20;
+    const rotateY = ((x / rect.width) - 0.5) * 35; 
+    const rotateX = ((y / rect.height) - 0.5) * -35;
     
     setMousePosition({ x: rotateY, y: rotateX });
   };
@@ -87,9 +87,9 @@ export const PosterCard = ({
           }}
           transition={{ 
             type: "spring",
-            stiffness: 300,
-            damping: 25,
-            mass: 0.5
+            stiffness: 200,
+            damping: 35,
+            mass: 0.4
           }}
           style={{ transformStyle: "preserve-3d" }}
         >
