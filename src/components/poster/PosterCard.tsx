@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { Poster } from "@/data/posters";
 import { PosterModal } from "./PosterModal";
 import { usePosterData } from "@/hooks/usePosterData";
-import { Trash2 } from "lucide-react";
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatPrice } from "@/lib/pricing";
 
 interface PosterCardProps {
   poster: Poster;
@@ -23,6 +24,9 @@ export const PosterCard = ({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const categoryLabel = poster.subcategory
+    ? poster.subcategory.toUpperCase()
+    : poster.category.charAt(0).toUpperCase() + poster.category.slice(1);
   
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
@@ -76,7 +80,7 @@ export const PosterCard = ({
         style={{ perspective: "1000px" }}
       >
         <motion.div 
-          className="relative aspect-[3/4] overflow-hidden bg-gray-100"
+          className="relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 shadow-sm ring-1 ring-gray-200/70 transition-shadow group-hover:shadow-xl"
           animate={{ 
             rotateY: mousePosition.x,
             rotateX: mousePosition.y,
@@ -101,6 +105,9 @@ export const PosterCard = ({
             transition={{ duration: 0.4 }}
             style={{ transformStyle: "preserve-3d" }}
           />
+          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur">
+            {categoryLabel}
+          </span>
           
           {/* Add shadow and reflection effects */}
           {isHovered && (
@@ -116,7 +123,7 @@ export const PosterCard = ({
           )}
           
           <motion.div 
-            className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center gap-4 opacity-0 md:group-hover:opacity-100 transition-opacity"
+            className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center gap-4 opacity-0 md:group-hover:opacity-100 transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: isHovered ? 1 : 0
@@ -127,16 +134,20 @@ export const PosterCard = ({
               className="px-6 py-3 md:py-2 bg-white text-gray-900 font-medium rounded-full transform transition-transform duration-300 shadow-lg touch-manipulation"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={openModal}
+              onClick={(event) => {
+                event.stopPropagation();
+                openModal();
+              }}
             >
-              Quick View
+              Choose Size
             </motion.button>
             {isAdmin && (
               <motion.button
                 className="p-2 bg-red-500 text-white rounded-full transform transition-transform duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={async () => {
+                onClick={async (event) => {
+                  event.stopPropagation();
                   if (window.confirm('Are you sure you want to delete this poster?')) {
                     const success = await deletePoster(poster.id);
                     if (success) {
@@ -154,9 +165,22 @@ export const PosterCard = ({
           </motion.div>
         </motion.div>
         
-        <div className="mt-4 text-left">
-          <h3 className="text-gray-900 font-medium">{poster.title}</h3>
-          <p className="text-gray-700 mt-1">From ₹{poster.sizes.A4.replace('$', '')}</p>
+        <div className="mt-4 flex items-start justify-between gap-3 text-left">
+          <div className="min-w-0">
+            <h3 className="truncate text-gray-900 font-semibold">{poster.title}</h3>
+            <p className="mt-1 text-sm text-gray-600">From {formatPrice(poster.sizes.A4)}</p>
+          </div>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              openModal();
+            }}
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-900 text-white shadow-sm transition-colors hover:bg-indigo-600"
+            aria-label={`Choose size for ${poster.title}`}
+          >
+            <ShoppingCart size={18} />
+          </button>
         </div>
       </motion.div>
       

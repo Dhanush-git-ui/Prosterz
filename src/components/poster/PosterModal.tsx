@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { formatPrice } from "@/lib/pricing";
 
 interface PosterModalProps {
   poster: Poster;
@@ -69,7 +70,7 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
               <div className="w-full md:w-1/4 p-4 md:p-6 flex flex-col justify-between overflow-y-auto">
                 <div className="space-y-4">
                   <h2 className="text-xl md:text-2xl font-bold text-gray-900">{poster.title}</h2>
-                  <p className="text-gray-600">Category: {poster.category}</p>
+                  <p className="text-gray-600 capitalize">Category: {poster.subcategory || poster.category}</p>
                   
                   <div className="space-y-3 mt-4 md:mt-6">
                     <h3 className="text-md md:text-lg font-medium">Select Size:</h3>
@@ -83,20 +84,20 @@ export const PosterModal = ({ poster, isOpen, onClose }: PosterModalProps) => {
                           <RadioGroupItem value="A4" id="a4" />
                           <Label htmlFor="a4" className="flex items-center gap-2">
                             <span>A4</span>
-                            <span className="text-sm text-gray-500">(210 × 297 mm)</span>
+                            <span className="text-sm text-gray-500">(210 x 297 mm)</span>
                           </Label>
                         </div>
-                        <span className="font-semibold">₹{poster.sizes.A4.replace('$', '')}</span>
+                        <span className="font-semibold">{formatPrice(poster.sizes.A4)}</span>
                       </div>
                       <div className="flex items-center justify-between space-x-2">
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="A3" id="a3" />
                           <Label htmlFor="a3" className="flex items-center gap-2">
                             <span>A3</span>
-                            <span className="text-sm text-gray-500">(297 × 420 mm)</span>
+                            <span className="text-sm text-gray-500">(297 x 420 mm)</span>
                           </Label>
                         </div>
-                        <span className="font-semibold">₹{poster.sizes.A3.replace('$', '')}</span>
+                        <span className="font-semibold">{formatPrice(poster.sizes.A3)}</span>
                       </div>
                     </RadioGroup>
                   </div>

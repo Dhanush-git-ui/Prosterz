@@ -5,6 +5,7 @@ import { ShoppingCart as CartIcon, X, Trash2, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { formatPrice } from '@/lib/pricing';
 
 export const ShoppingCart: React.FC = () => {
   const { items, removeFromCart, cartOpen, setCartOpen, totalAmount, sendToWhatsApp } = useCart();
@@ -14,7 +15,7 @@ export const ShoppingCart: React.FC = () => {
     <>
       {/* Cart Icon */}
       <motion.button
-        className="fixed bottom-8 right-8 z-50 p-3 md:p-4 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-full shadow-lg flex items-center justify-center"
+        className="fixed bottom-24 right-6 md:right-8 z-50 p-3 md:p-4 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-full shadow-lg flex items-center justify-center"
         onClick={() => setCartOpen(true)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -80,7 +81,7 @@ export const ShoppingCart: React.FC = () => {
                         <div className="flex-1 text-sm md:text-base">
                           <h3 className="font-medium line-clamp-1">{item.poster.title}</h3>
                           <p className="text-xs md:text-sm text-gray-500">Size: {item.size}</p>
-                          <p className="font-semibold">₹{item.price.replace('$', '')}</p>
+                          <p className="font-semibold">{formatPrice(item.price)}</p>
                         </div>
                         <Button 
                           variant="ghost" 
@@ -99,7 +100,7 @@ export const ShoppingCart: React.FC = () => {
               <div className="p-3 md:p-4 border-t">
                 <div className="flex justify-between mb-3 md:mb-4">
                   <span className="font-medium">Total:</span>
-                  <span className="font-bold">₹{totalAmount.toFixed(2)}</span>
+                  <span className="font-bold">INR {totalAmount.toFixed(0)}</span>
                 </div>
                 
                 <Button 

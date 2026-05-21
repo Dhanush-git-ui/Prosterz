@@ -2,6 +2,16 @@
 import { useState, useEffect } from "react";
 import { defaultPosters, Poster } from "@/data/posters";
 import { toast } from "sonner";
+import { parsePrice } from "@/lib/pricing";
+
+const normalizePoster = (poster: Poster): Poster => ({
+  ...poster,
+  image: poster.image?.replace(/^\/[^/]+-uploads\//, "/uploads/") || "/placeholder.svg",
+  sizes: {
+    A4: String(parsePrice(poster.sizes?.A4 || 0)),
+    A3: String(parsePrice(poster.sizes?.A3 || 0)),
+  },
+});
 
 export const usePosterData = () => {
   const [posters, setPosters] = useState<Poster[]>([]);
@@ -23,38 +33,42 @@ export const usePosterData = () => {
           
           // Make sure all posters have valid image URLs
           const validatedPosters = parsedPosters.map((poster: Poster) => {
+            const normalizedPoster = normalizePoster(poster);
             // Check if the image URL is valid
-            if (!poster.image || 
-                poster.image.includes(":\\") || 
-                (poster.image.includes("/") && 
-                 !poster.image.startsWith("http") && 
-                 !poster.image.startsWith("/lovable-uploads") &&
-                 !poster.image.startsWith("/"))) {
-              console.log("Invalid image URL found:", poster.image);
+            if (!normalizedPoster.image || 
+                normalizedPoster.image.includes(":\\") || 
+                (normalizedPoster.image.includes("/") && 
+                 !normalizedPoster.image.startsWith("http") && 
+                 !normalizedPoster.image.startsWith("/uploads") &&
+                 !normalizedPoster.image.startsWith("/"))) {
+              console.log("Invalid image URL found:", normalizedPoster.image);
               return {
-                ...poster,
+                ...normalizedPoster,
                 image: "/placeholder.svg" 
               };
             }
-            return poster;
+            return normalizedPoster;
           });
           
           setPosters(validatedPosters);
+          localStorage.setItem("posters", JSON.stringify(validatedPosters));
           console.log("Loaded posters:", validatedPosters);
         } catch (error) {
           console.error("Error parsing posters from localStorage:", error);
           // If parsing fails, reset with default posters
-          localStorage.setItem("posters", JSON.stringify(defaultPosters));
-          setPosters(defaultPosters);
+          const normalizedDefaults = defaultPosters.map(normalizePoster);
+          localStorage.setItem("posters", JSON.stringify(normalizedDefaults));
+          setPosters(normalizedDefaults);
         }
       } else {
         // If no posters in localStorage, save default posters
-        localStorage.setItem("posters", JSON.stringify(defaultPosters));
-        setPosters(defaultPosters);
+        const normalizedDefaults = defaultPosters.map(normalizePoster);
+        localStorage.setItem("posters", JSON.stringify(normalizedDefaults));
+        setPosters(normalizedDefaults);
       }
     } catch (error) {
       console.error("Error loading posters:", error);
-      setPosters(defaultPosters);
+      setPosters(defaultPosters.map(normalizePoster));
     } finally {
       setIsLoading(false);
     }

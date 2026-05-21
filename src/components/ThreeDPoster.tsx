@@ -83,7 +83,7 @@ export const ThreeDPoster = () => {
       >
         <div className="absolute inset-2 rounded-lg overflow-hidden bg-gradient-to-br from-indigo-500 to-pink-500">
           <img 
-            src="/lovable-uploads/1c9f001d-6edf-48a9-9fd6-203e81e21c29.png" 
+            src="/uploads/1c9f001d-6edf-48a9-9fd6-203e81e21c29.png" 
             alt="Featured Poster" 
             className="w-full h-full object-cover opacity-90 mix-blend-overlay"
           />

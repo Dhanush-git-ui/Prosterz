@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { posterFormSchema, PosterFormValues } from "../form/PosterFormSchema";
 import { toast as sonnerToast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { parsePrice } from "@/lib/pricing";
 
 interface UsePosterFormProps {
   initialImageUrl?: string;
@@ -45,23 +46,20 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
       setIsSubmitting(true);
       console.log("Submitting form data:", data);
       
-      // Format prices with ₹ if not included
-      const formattedPriceA4 = data.priceA4.startsWith("₹") || data.priceA4.startsWith("$")
-        ? data.priceA4 
-        : `₹${data.priceA4}`;
+      const formattedPriceA4 = String(parsePrice(data.priceA4));
       
       // Set default A3 price based on category and subcategory
       let defaultA3Price = "";
       if (data.category === "movies" && (data.subcategory === "dc" || data.subcategory === "marvel")) {
-        defaultA3Price = "₹109";
+        defaultA3Price = "109";
       } else {
         // For other categories, default to A4 price + 30
-        const a4Price = parseInt(data.priceA4.replace(/[^\d]/g, ''));
-        defaultA3Price = a4Price ? `₹${a4Price + 30}` : formattedPriceA4;
+        const a4Price = parsePrice(data.priceA4);
+        defaultA3Price = a4Price ? String(a4Price + 30) : formattedPriceA4;
       }
       
       const formattedPriceA3 = data.priceA3 && data.priceA3.length > 0
-        ? (data.priceA3.startsWith("₹") || data.priceA3.startsWith("$") ? data.priceA3 : `₹${data.priceA3}`)
+        ? String(parsePrice(data.priceA3))
         : defaultA3Price;
       
       // Make sure we have a valid image URL that's accessible
@@ -116,17 +114,17 @@ export const usePosterForm = ({ initialImageUrl = "", editMode = false, posterId
           (imageUrl.includes(":\\") || 
           (imageUrl.includes("/") && 
            !imageUrl.startsWith("http") && 
-           !imageUrl.startsWith("/lovable-uploads") &&
+           !imageUrl.startsWith("/uploads") &&
            !imageUrl.startsWith("/") &&
            !imageUrl.startsWith("blob:")))) {
         console.log("Invalid image path detected, using placeholder");
         imageUrl = "/placeholder.svg";
       } else {
         // Ensure the image starts with the proper path
-        if (!imageUrl.startsWith('/lovable-uploads/') && 
+        if (!imageUrl.startsWith('/uploads/') && 
             !imageUrl.startsWith('http') &&
             !imageUrl.startsWith('blob:')) {
-          imageUrl = `/lovable-uploads/${imageUrl.split('/').pop()}`;
+          imageUrl = `/uploads/${imageUrl.split('/').pop()}`;
           console.log("Fixed image path:", imageUrl);
         }
       }

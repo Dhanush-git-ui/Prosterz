@@ -4,12 +4,13 @@ import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { parsePrice } from '@/lib/pricing';
 
 export const Cart: React.FC = () => {
   const { items, removeFromCart, clearCart, sendToWhatsApp } = useCart();
   const isMobile = useIsMobile();
   
-  const total = items.reduce((sum, item) => sum + parseFloat(item.price.replace('$', '')), 0);
+  const total = items.reduce((sum, item) => sum + parsePrice(item.price), 0);
 
   if (items.length === 0) {
     return (
@@ -45,7 +46,7 @@ export const Cart: React.FC = () => {
       <div className="mt-4 md:mt-6 border-t pt-4">
         <div className="flex justify-between items-center mb-4">
           <span className="text-base md:text-lg font-semibold">Total:</span>
-          <span className="text-base md:text-lg font-bold">₹{total.toFixed(2)}</span>
+          <span className="text-base md:text-lg font-bold">INR {total.toFixed(0)}</span>
         </div>
         <div className="flex flex-col md:flex-row gap-2 md:gap-4">
           <Button

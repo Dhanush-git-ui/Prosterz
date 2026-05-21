@@ -93,13 +93,13 @@ export const Navbar = () => {
       animate={{ opacity: 1, y: 0 }}
       className="fixed top-0 w-full bg-white z-50 shadow-sm"
     >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="container mx-auto px-4 sm:px-6 py-3 md:py-4 flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <Link to="/">
             <motion.img
-              src="/lovable-uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png"
+              src="/uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png"
               alt="Prosterz Logo"
-              className="w-12 h-12"
+              className="h-10 w-10 sm:h-12 sm:w-12"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ 
@@ -109,7 +109,7 @@ export const Navbar = () => {
               }}
             />
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">Prosterz</h1>
+          <h1 className="truncate text-xl sm:text-2xl font-bold text-gray-800">Prosterz</h1>
         </div>
         
         {/* Desktop Navigation */}
@@ -119,12 +119,12 @@ export const Navbar = () => {
           <Link to="/sign-in" className="text-gray-700 hover:text-gray-900 font-medium">Sign In</Link>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex flex-shrink-0 items-center gap-2 sm:gap-4">
           <motion.button 
             onClick={() => setCartOpen(true)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="relative p-2"
+            className="relative p-2 rounded-full hover:bg-gray-100"
           >
             <ShoppingCart className="text-gray-700" size={20} />
             {items.length > 0 && (
@@ -211,7 +211,7 @@ export const Navbar = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-white border-t border-gray-100 px-6 py-4"
+          className="md:hidden bg-white border-t border-gray-100 px-4 py-4 shadow-sm"
         >
           <div className="flex flex-col gap-4">
             <a 

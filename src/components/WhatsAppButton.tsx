@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { WhatsappIcon } from './icons/WhatsappIcon';
 import { useCart } from '@/context/CartContext';
+import { formatPrice } from '@/lib/pricing';
 
 export const WhatsAppButton = () => {
   const { items, totalAmount } = useCart();
@@ -13,11 +14,11 @@ export const WhatsAppButton = () => {
       message = "Hello, I'd like to order the following posters:\n\n";
       
       items.forEach((item, index) => {
-        const price = item.price.replace('$', '₹');
+        const price = formatPrice(item.price);
         message += `${index + 1}. ${item.poster.title} - ${item.size} - ${price}\n`;
       });
       
-      message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}`;
+      message += `\nTotal Amount: INR ${totalAmount.toFixed(0)}`;
     }
     
     const encodedMessage = encodeURIComponent(message);
@@ -29,7 +30,7 @@ export const WhatsAppButton = () => {
   return (
     <motion.button
       onClick={handleWhatsAppClick}
-      className="fixed bottom-8 right-8 z-50 bg-green-500 rounded-full shadow-lg flex items-center gap-2 px-4 py-3 md:p-3 md:px-3"
+      className="fixed bottom-6 right-6 md:right-8 z-50 bg-green-500 rounded-full shadow-lg flex items-center gap-2 px-4 py-3 md:p-3 md:px-3"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >

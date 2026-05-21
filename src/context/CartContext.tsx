@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { formatPrice, parsePrice } from '@/lib/pricing';
 
 interface CartItem {
   poster: {
@@ -49,7 +50,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setItems([]);
   };
 
-  const totalAmount = items.reduce((sum, item) => sum + parseFloat(item.price.replace('$', '')), 0);
+  const totalAmount = items.reduce((sum, item) => sum + parsePrice(item.price), 0);
 
   const sendToWhatsApp = () => {
     if (items.length === 0) {
@@ -65,11 +66,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     let message = "Hello, I'd like to order the following posters:\n\n";
     
     items.forEach((item, index) => {
-      const price = item.price.replace('$', '₹');
+      const price = formatPrice(item.price);
       message += `${index + 1}. ${item.poster.title} - ${item.size} - ${price}\n`;
     });
     
-    message += `\nTotal Amount: ₹${totalAmount.toFixed(2)}`;
+    message += `\nTotal Amount: INR ${totalAmount.toFixed(0)}`;
     
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\s+/g, '')}?text=${encodedMessage}`;

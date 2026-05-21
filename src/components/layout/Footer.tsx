@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <img 
-              src="/lovable-uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png" 
+              src="/uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png" 
               alt="Prosterz Logo" 
               className="w-10 h-10 inline-block mr-2"
             />
@@ -40,7 +40,7 @@ export const Footer = () => {
               </div>
               <div className="mt-4">
                 <img 
-                  src="/lovable-uploads/bf3d0cf8-4633-459c-88b1-a68162036b2a.png" 
+                  src="/uploads/bf3d0cf8-4633-459c-88b1-a68162036b2a.png" 
                   alt="Instagram QR Code" 
                   className="w-32 h-32 bg-white p-1 rounded"
                 />

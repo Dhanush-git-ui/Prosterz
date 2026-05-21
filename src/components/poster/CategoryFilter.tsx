@@ -35,12 +35,12 @@ export const CategoryFilter = ({
   return (
     <div className="mb-10 flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-2">
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
           {categories.map((category) => (
             <motion.button
               key={category.id}
               onClick={() => handleCategoryChange(category.id)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 selectedCategory === category.id
                   ? "bg-gradient-to-r from-indigo-500 to-pink-400 text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"

@@ -26,7 +26,7 @@ export const PosterFinder = () => {
     if (!minPrice && !maxPrice) return;
     
     const priceRange = `${minPrice || '0'} - ${maxPrice || 'any'}`;
-    const message = `Hello! I'm looking for posters in the price range of ₹${priceRange}`;
+    const message = `Hello! I'm looking for posters in the price range of INR ${priceRange}`;
     const phoneNumber = '+91 9502869924';
     const encodedMessage = encodeURIComponent(message);
     const formattedNumber = phoneNumber.replace(/\s+/g, '');

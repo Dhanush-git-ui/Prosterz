@@ -92,7 +92,7 @@ const SignIn = () => {
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
             <motion.img
-              src="/lovable-uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png"
+              src="/uploads/a637c4db-4417-4d0e-86dd-faa0cdf3ea01.png"
               alt="Prosterz Logo"
               className="w-16 h-16 mx-auto mb-2"
               initial={{ scale: 0.8 }}

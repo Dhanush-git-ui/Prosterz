@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Poster } from "@/data/posters";
+import { formatPrice } from "@/lib/pricing";
 
 interface PosterPopoverProps {
   poster: Poster;
@@ -54,9 +55,9 @@ export const PosterPopover = ({
           </div>
           <div className="p-4 bg-white">
             <h3 className="font-medium text-lg">{poster.title}</h3>
-            <p className="text-gray-600 mb-2">Category: {poster.category}</p>
+            <p className="text-gray-600 mb-2 capitalize">Category: {poster.subcategory || poster.category}</p>
             <div className="flex justify-between items-center mt-3">
-              <p className="text-gray-900 font-bold">From ₹{poster.sizes.A4.replace('$', '')}</p>
+              <p className="text-gray-900 font-bold">From {formatPrice(poster.sizes.A4)}</p>
               <motion.button
                 onClick={() => onAddToCart(poster)}
                 className="px-4 py-1.5 bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-sm rounded-full flex items-center gap-1"
